@@ -1,0 +1,8 @@
+services:
+  newman:
+    image: newman:staging
+    container_name: newman
+    working_dir: /var/www/wss2
+    tty: true
+    volumes:
+        - ./collections:/etc/newman

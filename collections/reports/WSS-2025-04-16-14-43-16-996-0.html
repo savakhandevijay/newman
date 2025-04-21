@@ -1,0 +1,2034 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-y: scroll;">
+<head>
+  <meta charset="UTF-8">
+  <title>Newman Summary Report</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/default.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
+
+<style>
+code.renderMarkdown table, code.renderMarkdown th, code.renderMarkdown td {
+    border: 1px solid black;
+    width: max-content;
+    padding: .75rem;
+}
+
+.theme-dark {
+    --background-color: #222;
+    --bg-card-deck: #444444;
+    --text-color: #ccd2d8;
+    --tab-border: solid 1px #444;
+    --success: #3c9372;
+    --failure: #c24a3f;
+    --warning: #d28c23;
+    --info: #4083b6;
+    --badge-outline: #3c9372;
+    --badge-bg: #cdd3db;
+    --badge-text: #ccd2d9;
+    --failure-row: #c24a3f;
+    --warning-row: #d28c23;
+    --card-bg: #444;
+    --card-footer: #4f5758;
+    --form-input: #ececb5;
+    --hov-text: #d2dae5;
+    --h4-text: #ccd1d9;
+}
+
+.theme-light {
+    --tab-border: solid 1px #fff;
+    --text-color: #000000;
+    --success: #42a745;
+    --failure: #dc3544;
+    --warning: #f4c10b;
+    --info: #49a1b8;
+    --badge-outline: #040411;
+    --badge-bg: #f8f9fa;
+    --badge-text: #fff;
+    --failure-row: #f5c6cb;
+    --warning-row: #ffeeba;
+    --card-bg: #f7f7f7;
+    --hov-text: #fff;
+    --h4-text: #ffffff;
+}
+
+body {
+  padding-top:30px;
+  background-color: var(--background-color)!important;
+  color: var(--text-color);
+}
+
+#execution-data {
+  padding: 10px;
+  border: var(--tab-border);
+  border-top: none;
+}
+
+.nav-tabs {
+  padding-top: 10px;
+  height: 105px;
+  overflow-y: auto;
+}
+
+body.theme-dark .card-header {
+    background-color: #444;
+}
+
+body.theme-light .card-header {
+    background-color: #f7f7f7;
+}
+
+.card-footer {
+    padding: .75rem 1.25rem;
+    background-color: var(--card-footer);
+}
+
+.card-deck {
+    background-color: var(--bg-card-deck)!important;
+}
+.form-control {
+    background: var(--form-input);
+}
+
+.custom-tab {
+  padding: 10px 15px;
+  margin-right: 0px;
+  height: 47px;
+  width: auto;
+  text-align: center;
+  border: var(--tab-border);
+  border-bottom: none;
+  cursor:pointer;
+}
+
+body.theme-dark .text-white {
+    color: #ccd2d9!important;
+}
+h4 {
+    color: var(--h4-text);
+}
+
+body.theme-dark h1 {
+    color: #ccd2da;
+}
+
+body.theme-dark .bg-light>td {
+    background: #4f5858!important;
+}
+
+body.theme-dark .hljs {
+    background: #0a0a0ab0!important;
+    color: #8d8787!important;
+}
+
+.bg-info {
+    background-color: var(--info)!important;
+}
+.bg-success {
+    background-color: var(--success)!important;
+}
+
+.alert-success {
+    background-color: var(--success)!important;
+}
+
+.alert-warning {
+    background-color: var(--warning)!important;
+}
+
+.alert-info {
+    background-color: var(--info)!important;
+}
+
+.bg-warning {
+    background-color: var(--warning)!important;
+}
+
+.badge-warning {
+    color: var(--badge-text)!important;
+    background-color: var(--warning)!important;
+}
+
+.table-warning>td {
+    background-color: var(--warning-row);
+}
+
+.alert-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .alert-dark {
+    background-color: #636467!important;
+}
+
+body.theme-dark .text-dark {
+    color: #d1dae4!important;
+}
+
+body.theme-dark .badge-light {
+    color: #212529;
+    background-color: #cdd3db;
+}
+
+body.theme-light .badge-light {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+body.theme-light .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-dark .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.table-danger>td {
+    background-color: var(--failure-row);
+}
+
+body.theme-dark .table .thead-light th {
+    background-color: #4f5858!important;
+    border-color: #dee2e6!important;
+    color: #ccd2d8!important;
+}
+
+.itPassed {
+  background: var(--success);
+  color: white;
+}
+.itFailed {
+  background: var(--failure);
+  color: white;
+}
+
+.resultsInfoPass {
+  color: var(--success);
+  padding-top: 4px;
+}
+
+.resultsInfoFail {
+  color: var(--failure);
+  padding-top: 4px;
+}
+
+.badge-outline-success {
+  color: var(--success);
+  border: 1px solid var(--success);
+  background-color: transparent;
+}
+
+.badge-outline {
+  color: var(--badge-outline);
+  border: 1px solid var(--badge-outline);
+  background-color: transparent;
+}
+
+.btn-outline-success {
+    color: var(--success)!important;
+    border-color: var(--success)!important;
+}
+
+.backToTop:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-success:hover {
+  background-color: var(--success);
+  border-color: var(--success);
+  color: var(--hov-text)!important;
+}
+
+.btn-outline-secondary {
+  background-color: var(--success)!important;
+  color: var(--hov-text)!important;
+}
+
+body.theme-dark .env-heading {
+    color: #ccd2d9!important;
+}
+
+body, html {
+  height:100%;
+}
+
+.card {
+  overflow:hidden;
+}
+
+body.theme-dark .card-body {
+    background-color: #444;
+}
+
+body.theme-light .card-body {
+    background-color: #f7f7f7;
+}
+
+body.theme-dark .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+body.theme-light .card-body .bg-danger {
+    background-color: var(--failure)!important;
+}
+
+.card-body .rotate {
+  z-index: 8;
+  float: right;
+  height: 100%;
+}
+
+.card-body .rotate i {
+  color: #14141426;
+  position: absolute;
+  left: 0;
+  left: auto;
+  right: -10px;
+  bottom: 0;
+  display: block;
+  -webkit-transform: rotate(-44deg);
+  -moz-transform: rotate(-44deg);
+  -o-transform: rotate(-44deg);
+  -ms-transform: rotate(-44deg);
+  transform: rotate(-44deg);
+}
+
+.dyn-height {
+  max-height:350px;
+  overflow-y:auto;
+}
+
+.nav-pills .nav-link.active {
+  background-color: transparent!important;
+}
+
+.backToTop {
+  display: none;
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  z-index: 99;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+.card-header .fa {
+  transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+  transform: rotate(90deg);
+}
+
+.single-line-tabs {
+  padding-top: 10px;
+  height: 60px;
+}
+
+.multiple-line-tabs {
+  padding-top: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 4px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  box-shadow: 0 0px 15px #2020203d;
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+input:checked + .slider {
+  background-color: #4083b6;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #4083b6;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+  background: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+table.dataTable td, table.dataTable tr {
+    vertical-align: middle;
+}
+
+body.theme-dark code {
+    color: #ccd2d8!important;
+}
+
+body.theme-light code {
+    color: #000000!important;
+}
+
+.text-wrap {
+    word-wrap: break-word; 
+    min-width: 600px; 
+    max-width: 600px; 
+    white-space: normal;
+}
+
+</style>
+</head>
+<body class="theme-dark">
+<script>
+    function setTheme(themeName) {
+        localStorage.setItem('theme', themeName);
+        document.body.className = themeName;
+    }
+
+    function toggleTheme() {
+        if (localStorage.getItem('theme') === 'theme-light') {
+            setTheme('theme-dark');
+        } else {
+            setTheme('theme-light');
+        }
+    }
+</script>
+  <div class="container">
+        <div class="container">
+            <label>Light</label>
+            <label id="switch" class="switch">
+                <input type="checkbox" onchange="toggleTheme()" id="slider">
+                <span class="slider round"></span>
+            </label>
+            <label>Dark</label>
+        </div>
+        <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-pills mb-3 nav-justified" id="pills-tab" role="tablist">
+            <li class="nav-item bg-info active" data-toggle="tooltip" title="Click to view the Summary">
+                <a class="nav-link text-white" id="pills-summary-tab" data-toggle="pill" href="#pills-summary" role="tab" aria-controls="pills-summary" aria-selected="true">Summary</a>
+            </li>
+            <li class="nav-item bg-success" data-toggle="tooltip" title="Click to view the Requests">
+                <a class="nav-link text-white" id="pills-requests-tab" data-toggle="pill" href="#pills-requests" role="tab" aria-controls="pills-requests" aria-selected="false">Total Requests <span class="badge badge-light">6</span></a>
+            </li>
+            <li class="nav-item bg-danger" data-toggle="tooltip" title="Click to view the Failed Tests">
+                <a class="nav-link text-white" id="pills-failed-tab" data-toggle="pill" href="#pills-failed" role="tab" aria-controls="pills-failed" aria-selected="false">Failed Tests <span class="badge badge-light">0</span></a>
+            </li>
+            <li class="nav-item bg-warning" data-toggle="tooltip" title="Click to view the Skipped Tests">
+                <a class="nav-link text-white" id="pills-skipped-tab" data-toggle="pill" href="#pills-skipped" role="tab" aria-controls="pills-skipped" aria-selected="false">Skipped Tests <span class="badge badge-light">0</span></a>
+            </li>
+            </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-summary" role="tabcard" aria-labelledby="pills-summary-tab">
+<div class="row">
+  <div class="col-md-9 col-lg-12 main">
+   <h1 class="display-2 text-center">Newman Run Dashboard</h1>
+   <h5 class="text-center">Wednesday, 16 April 2025 14:43:16 GMT</h5>
+   <div class="row">
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-success">
+      <div class="card-body bg-info">
+       <div class="rotate">
+        <i class="fa fa-retweet fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Iterations</h6>
+       <h1 class="display-1">1</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-danger">
+      <div class="card-body bg-success">
+       <div class="rotate">
+        <i class="fa fa-list fa-4x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Assertions</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-info">
+      <div class="card-body bg-danger">
+       <div class="rotate">
+        <i class="fa fa-plus-circle fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Failed Tests</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+     <div class="card text-white card-warning">
+      <div class="card-body bg-warning">
+       <div class="rotate">
+        <i class="fa fa-share fa-5x"></i>
+       </div>
+       <h6 class="text-uppercase">Total Skipped Tests</h6>
+       <h1 class="display-1">0</h1>
+      </div>
+     </div>
+    </div>
+   </div>
+   <hr>
+    <div class="row">
+    <div class="col">
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">File Information</h5>
+                <span><i class="fas fa-file-code"></i></span><strong> Collection:</strong> WSS<br>
+                <span><i class="fas fa-folder"></i></span><strong> Specified Folders:</strong> Apps<br>
+                <span><i class="fas fa-file-code"></i></span><strong> Environment:</strong> DEV WSS<br>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="card border-info">
+                <div class="card-body">
+                <h5 class="card-title text-uppercase text-white text-center bg-info">Timings and Data</h5>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Total run duration:</strong> 16.2s<br>
+                <span><i class="fas fa-database"></i></span><strong> Total data received:</strong> 50.15KB<br>
+                <span><i class="fas fa-stopwatch"></i></span><strong> Average response time:</strong> 2.6s<br>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-sm-12 mb-3">
+            <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-inverse">
+                    <tr class="text-center">
+                        <th class="text-uppercase">Summary Item</th>
+                        <th class="text-uppercase">Total</th>
+                        <th class="text-uppercase">Failed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Requests</td>
+                        <td class="text-center">6</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Prerequest Scripts</td>
+                        <td class="text-center">7</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr>
+                        <td>Test Scripts</td>
+                        <td class="text-center">5</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr class="">
+                        <td>Assertions</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">0</td>
+                    </tr>
+                    <tr class="">
+                        <td>Skipped Tests</td>
+                        <td class="text-center">0</td>
+                        <td class="text-center">-</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+    <hr>
+   </div>
+   </div>
+  </div>
+ </div>
+        </div>
+            <div class="tab-pane fade" id="pills-failed" role="tabcard" aria-labelledby="pills-failed-tab">
+                <button id="topOfFailuresScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+                <div class="alert alert-success text-uppercase text-center">
+                     <br><br><h1 class="text-center">There are no failed tests <span><i class="far fa-thumbs-up"></i></span></h1><br><br>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-skipped" role="tabcard" aria-labelledby="pills-skipped-tab">
+                <button id="topOfSkippedScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+                <div class="alert alert-success text-uppercase text-center">
+                    <br><br><h1 class="text-center">There are no skipped tests <span><i class="far fa-thumbs-up"></i></span></h1><br><br>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-requests" role="tabcard" aria-labelledby="pills-requests-tab">
+
+            <button id="topOfRequestsScreen" class="btn btn-outline-success btn-sm backToTop" onclick="topFunction()">Go To Top</button>
+
+            <div class="btn-group float-right" role="group" aria-label="Button Group">
+                <button id="openAll" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Folders</button>
+                <button id="openAllRequests" class="btn btn-outline-success btn-sm float-right" style="text-align: center; width: 140px;">Expand Requests</button>
+            </div>
+
+    <div class="text-uppercase" id="execution-menu">
+        <h5>1 Iteration available to view</h5>
+        
+        <nav class="table-responsive">
+        <ul class="nav multiple-line-tabs" id="iterationList">
+        </ul>
+        </nav>
+    </div>
+    <h6 class="text-uppercase text-muted" id="iterationSelected" style="padding-top: 10px;"></h6>
+	<div class="tab-content" id="execution-data">
+        <div class="alert alert-dark text-uppercase text-center iteration-0">
+        <a data-toggle="collapse" href="#" data-target="#folder-collapse-0bfcb4f0-e97d-496f-98e1-bd750919d5df-iteration-0" aria-expanded="false" aria-controls="collapse" id="folder-0bfcb4f0-e97d-496f-98e1-bd750919d5df-iteration-0" class="collapsed text-dark z-block">
+        <i class="fas fa-info-circle float-left resultsInfoPass" ></i>
+            Apps - 5 Requests in the folder<i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+        </a>
+        </div>
+        <div id="folder-collapse-0bfcb4f0-e97d-496f-98e1-bd750919d5df-iteration-0" class="collapse" aria-labelledby="folder-0bfcb4f0-e97d-496f-98e1-bd750919d5df">
+            <div id="folder-3a84afad-9982-4627-a359-2e76034ddd91" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-3a84afad-9982-4627-a359-2e76034ddd91" aria-expanded="false" aria-controls="collapse" id="requests-3a84afad-9982-4627-a359-2e76034ddd91" class="collapsed text-white z-block"  style="text-decoration:none">
+                    Iteration: 1 - <span class="badge-outline-primary badge badge-primary">GET</span> Hello World<i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-3a84afad-9982-4627-a359-2e76034ddd91" class="collapse" aria-labelledby="requests-3a84afad-9982-4627-a359-2e76034ddd91">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://dev-wss2.cex.uk.webuy.test/v3/helloworld" target="_blank">https://dev-wss2.cex.uk.webuy.test/v3/helloworld</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 266ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 120B</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar bg-success" style="width: 100%" role="progressbar">
+                                            <h5 class="text-uppercase text-white text-center" style="padding-top:5px;"><strong>No Tests for this request</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">d142202f-c11d-4464-a7db-f7e76e1d5628</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">dev-wss2.cex.uk.webuy.test</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">Server</td>
+                                                    <td class="text-wrap">nginx</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Wed, 16 Apr 2025 14:43:00 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;UTF-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Transfer-Encoding</td>
+                                                    <td class="text-wrap">chunked</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Powered-By</td>
+                                                    <td class="text-wrap">PHP/8.2.27</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Xdebug-Profile-Filename</td>
+                                                    <td class="text-wrap">/var/log/wss/xdebug/cachegrind.out.8.gz</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Vary</td>
+                                                    <td class="text-wrap">Accept</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Frame-Options</td>
+                                                    <td class="text-wrap">DENY</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-XSS-Protection</td>
+                                                    <td class="text-wrap">1; mode&#x3D;block</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Content-Type-Options</td>
+                                                    <td class="text-wrap">nosniff</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Access-Control-Allow-Origin</td>
+                                                    <td class="text-wrap">*</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-26d8fa44-60ee-4b7c-8f2b-cd7ab62ae35c-0" class="prettyPrint">{&quot;response&quot;:{&quot;ack&quot;:&quot;Success&quot;,&quot;data&quot;:&quot;Hello World from UK file&quot;,&quot;error&quot;:{&quot;code&quot;:&quot;&quot;,&quot;internal_message&quot;:&quot;&quot;,&quot;moreInfo&quot;:[]}}}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-26d8fa44-60ee-4b7c-8f2b-cd7ab62ae35c-0">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <h5 class="alert alert-success text-uppercase text-center">No Tests for this request</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-55484c7c-20f8-4ad4-a74f-7544f6879652" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-55484c7c-20f8-4ad4-a74f-7544f6879652" aria-expanded="false" aria-controls="collapse" id="requests-55484c7c-20f8-4ad4-a74f-7544f6879652" class="collapsed text-white z-block"  style="text-decoration:none">
+                    Iteration: 1 - <span class="badge-outline-primary badge badge-primary">GET</span> Prelogin Appsetting<i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-55484c7c-20f8-4ad4-a74f-7544f6879652" class="collapse" aria-labelledby="requests-55484c7c-20f8-4ad4-a74f-7544f6879652">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://dev-wss2.cex.uk.webuy.test/v3/appsettings/prelogin?platformId&#x3D;18" target="_blank">https://dev-wss2.cex.uk.webuy.test/v3/appsettings/prelogin?platformId&#x3D;18</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 512ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 10.6KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar bg-success" style="width: 100%" role="progressbar">
+                                            <h5 class="text-uppercase text-white text-center" style="padding-top:5px;"><strong>No Tests for this request</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">22fb30c8-2664-4dfa-b899-bb98f9413e71</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">dev-wss2.cex.uk.webuy.test</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">Server</td>
+                                                    <td class="text-wrap">nginx</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Wed, 16 Apr 2025 14:43:01 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;UTF-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Transfer-Encoding</td>
+                                                    <td class="text-wrap">chunked</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Powered-By</td>
+                                                    <td class="text-wrap">PHP/8.2.27</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Xdebug-Profile-Filename</td>
+                                                    <td class="text-wrap">/var/log/wss/xdebug/cachegrind.out.7.gz</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Vary</td>
+                                                    <td class="text-wrap">Accept</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Frame-Options</td>
+                                                    <td class="text-wrap">DENY</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-XSS-Protection</td>
+                                                    <td class="text-wrap">1; mode&#x3D;block</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Content-Type-Options</td>
+                                                    <td class="text-wrap">nosniff</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Access-Control-Allow-Origin</td>
+                                                    <td class="text-wrap">*</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-1c97a61d-eb9d-4167-b080-3eb2f2baa856-1" class="prettyPrint">{&quot;response&quot;:{&quot;ack&quot;:&quot;Success&quot;,&quot;data&quot;:{&quot;preLoginSettings&quot;:{&quot;oauthBaseUrl&quot;:&quot;dev-oauth2.cex.uk.webuy.dev&quot;,&quot;webuyBasketItemQuantityLimit&quot;:5,&quot;wesellBasketItemQuantityLimit&quot;:2,&quot;wesellBasketTotalItemLimit&quot;:30,&quot;deliveryCharge&quot;:1,&quot;waiveDeliveryCharge&quot;:50,&quot;itemDeliveryCharge&quot;:5.99,&quot;waiveItemDeliveryCharge&quot;:500,&quot;minimumBuyCartValuePerItem&quot;:0.01,&quot;wesellMinimumBasketAmount&quot;:0,&quot;currencyCode&quot;:&quot;GBP&quot;,&quot;isProofOfIdRequired&quot;:1,&quot;displayCourierDispatchNote&quot;:1,&quot;courierDispatchStartTime&quot;:&quot;15:05&quot;,&quot;courierDispatchNonWorkingDays&quot;:&quot;FRI,SAT,SUN,WED&quot;,&quot;webuyOrdersPerDayLimit&quot;:0,&quot;bazaarvoiceLocale&quot;:&quot;en_GB&quot;,&quot;isMemberEmailVerificationEnabled&quot;:0,&quot;feedbackPrizeAmount&quot;:250,&quot;isInternationalDeliveryEnabled&quot;:1,&quot;isPaypalRestAddressEnabled&quot;:0,&quot;isMemberTitleEnabled&quot;:1,&quot;isMemberTaxIDEnabled&quot;:0,&quot;isCapturePlusEnabled&quot;:1,&quot;isFranchiseGDPREnabled&quot;:1,&quot;isCareerGDPREnabled&quot;:1,&quot;isMemberGDPREnabled&quot;:1,&quot;isNewAttributeDesignEnabled&quot;:1,&quot;webuyMinimumBasketCashAmount&quot;:5,&quot;isReCaptchaEnable&quot;:0,&quot;isTestDropEnabled&quot;:1,&quot;criteoAccountId&quot;:55279,&quot;isCriteoEnabled&quot;:1,&quot;criteoJsLocation&quot;:&quot;//dynamic.criteo.com/js/ld/ld.js?a&#x3D;&quot;,&quot;honorTestDropStorePriceInDays&quot;:6,&quot;currencySymbol&quot;:&quot;€&quot;,&quot;lowStockIndicatorCount&quot;:3,&quot;minBuyamtToWaiveDeliveryCharge&quot;:0,&quot;wesellItemDeliveryChargeExemption&quot;:0,&quot;wesellItemDeliveryChargeIncurred&quot;:1,&quot;perDayLimitOnWebuyOrders&quot;:0,&quot;wesellOrderExpiryInDays&quot;:4,&quot;favouriteBoxesIdsCountLimit&quot;:5000,&quot;favouritesBoxesAddCountLimit&quot;:10,&quot;inStockAlertMinAttributeCount&quot;:&quot;&quot;,&quot;inStockAlertMaxAttributeCount&quot;:&quot;&quot;,&quot;inStockAlertMaxAlertCount&quot;:15,&quot;instockAlertFetchLimit&quot;:50,&quot;isContactDropdownValidationEnabled&quot;:1,&quot;isGiftAidEnabled&quot;:1,&quot;externalAccountSaltKey&quot;:&quot;VmV61d9e3d04acea7df35d450496bUVd&quot;,&quot;isAddressToShowOnDispatchNoteHeader&quot;:1,&quot;attributeListItemCountLimit&quot;:200,&quot;isWesellReplacementPickingEnabled&quot;:1,&quot;isInStockAlertEnabled&quot;:1,&quot;instockAlertMaxListItemCount&quot;:0,&quot;facebookUrl&quot;:&quot;&quot;,&quot;instagramUrl&quot;:&quot;&quot;,&quot;pinterestUrl&quot;:&quot;&quot;,&quot;twitterUrl&quot;:&quot;&quot;,&quot;isReCaptchaOnLoginEnabled&quot;:0,&quot;superCategoryPhones&quot;:4,&quot;isBoxesFlagsEnabled&quot;:1,&quot;reCaptchaSiteKey&quot;:&quot;6LdtR98nAAAAAJx7rZulmonIFHrY0u5pUi4Jx3Wq&quot;,&quot;regradingPriceVarianceAmount&quot;:&quot;&quot;,&quot;webuyRegradingPriceVariance&quot;:5,&quot;gdprMinimumAgeLimit&quot;:13,&quot;isSignUpEmailVerificationEnabled&quot;:1,&quot;isWebuyAddressDbDriven&quot;:1,&quot;webuyAddressKey&quot;:&quot;EC&quot;,&quot;consumeRefundService&quot;:1,&quot;displayableBoxAttributeIds&quot;:&quot;[98]&quot;,&quot;isWebuyAddressSeparationEnabled&quot;:1,&quot;isNameProperCaseEnabled&quot;:1,&quot;isProofOfId2Required&quot;:0,&quot;trustpilotWesellPreferredSendHour&quot;:&quot;13:00:00&quot;,&quot;trustpilotWebuyPreferredSendHour&quot;:&quot;13:00:00&quot;,&quot;trustpilotWesellPreferredSendHour1&quot;:&quot;-1&quot;,&quot;trustpilotWebuyPreferredSendHour1&quot;:&quot;-1&quot;,&quot;instagramRefreshTokenUrl&quot;:&quot;&quot;,&quot;zTesting&quot;:&quot;common&quot;,&quot;worldpayPendingStateCheck&quot;:1,&quot;isClickAndCollectBetaEnabled&quot;:1,&quot;webuyMinimumAgeLimit&quot;:18,&quot;reducedPriceFilterFieldName&quot;:&quot;firstPrice&quot;,&quot;isBoxesPriceReductionEnabled&quot;:1,&quot;refundDBEntriesByWSS&quot;:1,&quot;isClickAndCollectEnabled&quot;:1,&quot;isMarketplaceDropItemEmailEnabled&quot;:1,&quot;isCollectionWebOrderCheckForProcessingEnabled&quot;:1,&quot;isClickAndCollectForCWCMEnabled&quot;:1,&quot;isBasketSharingEnabled&quot;:1,&quot;isStaticImageHostEnabled&quot;:1,&quot;minimumUpsDispatchAmount&quot;:300,&quot;staticImageBaseUrl&quot;:&quot;https://uk.cf-static.webuy.tools&quot;,&quot;shortBoxDetailsBoxIdsMaxLimit&quot;:20,&quot;productDetailUrl&quot;:&quot;http://uk.cwr.dev.webuy.com/product-detail?id&#x3D;&quot;,&quot;isDisplayWebuyShippingNoteEnabled&quot;:1,&quot;wecareEmailForCWCM&quot;:&quot;kidx.wecare@webuy.com&quot;,&quot;upsDeliveryMethodMinimumDispatchAmount&quot;:300,&quot;algoliaAppId&quot;:&quot;testingKMXS1FTYRV&quot;,&quot;algoliaIndexName&quot;:&quot;dev_cex_uk&quot;,&quot;algoliaReplicaIndexNames&quot;:&quot;dev_cex_uk_price_asc,dev_cex_uk_price_desc,dev_cex_uk_box_name_asc,dev_cex_uk_box_name_desc,dev_cex_uk_rating_desc,dev_cex_uk_popularity_desc,dev_cex_uk_wizard,dev_cex_uk_dummy&quot;,&quot;isStoreAddressInDispatchNote&quot;:0,&quot;isEcomEnabled&quot;:1,&quot;isMyAccountEnabled&quot;:1,&quot;isOneTrustEnabled&quot;:1,&quot;isVouchersKiwiServiceEnabled&quot;:1,&quot;portalBaseUrl&quot;:&quot;https://dev-portal.cex.webuy.dev&quot;,&quot;portalStockSearchUrl&quot;:&quot;/stock-searches#/box-search?&quot;,&quot;isShowUpdateNotification&quot;:1,&quot;clickAndCollectBetaStoreEmail&quot;:1,&quot;isProofOfIdValidationsRequired&quot;:0,&quot;bankTransferMinAgeLimit&quot;:0,&quot;isDynamicIpCheckForNonEcomAllowedStoresEnabled&quot;:1,&quot;wesellMaxDeliveryItemPriceLimit&quot;:0,&quot;algoliaFullImportMaxMemoryLimitInMB&quot;:&quot;5000M&quot;,&quot;isSeparateBillingAndDeliveryAddressesEnabled&quot;:1,&quot;maxAddressesLimit&quot;:10,&quot;boxesReducedPriceDisplayWindow&quot;:90,&quot;isAutoDispatchEnabled&quot;:1,&quot;companyFullName&quot;:&quot;CeX&quot;,&quot;storePageUrl&quot;:&quot;https://uk.webuy.com/site/store/&quot;,&quot;clickAndCollectFaqPageUrl&quot;:&quot;https://uk.support.webuy.com/support/solutions/articles/80001011656-what-are-the-membership-id-requirements-&quot;,&quot;websiteBaseUrl&quot;:&quot;webuy.com&quot;,&quot;algoliaDataImportLastBoxTouchID&quot;:3,&quot;cancelAccountQueryLimit&quot;:3000,&quot;isDeepLinkTrackingURLEnabled&quot;:0,&quot;CLICK_AND_COLLECT_ENABLED&quot;:1,&quot;singleMediaItemThresholdAmount&quot;:300,&quot;royalMailSD2ThresholdAmount&quot;:1000,&quot;royalMailSpecialDeliveryWeightThreshold&quot;:10000,&quot;sslOptsAMQP&quot;:&quot;[&#x27;capath&#x27; &#x3D;&gt; &#x27;/etc/ssl/certs&#x27;]&quot;,&quot;isSeparateBillingAndDeliveryAddressesEnabled1&quot;:0,&quot;maxAddressesLimit1&quot;:50,&quot;algoliaDeleteRecordsIsDays&quot;:1,&quot;activeCampaignBatchSize&quot;:50,&quot;isApcuStorageEnabled&quot;:1,&quot;&quot;:null,&quot;apmArr&quot;:&quot;ideal-ssl,przelewy-ssl,billdesk-ssl&quot;,&quot;dropAndGoNotificationEnabledStoreIds&quot;:&quot;292,3068,3005,198,338,272,266,271,3069,217,54,3017,3115,3073,315,318,182&quot;,&quot;isUpdateDynamicBranchIpEnabled&quot;:1,&quot;isWebuyAdhocPaymentEnabled&quot;:1,&quot;isSeparateDeliveryAndBillingAddressEnabled&quot;:0,&quot;consecutivePriceDay&quot;:28,&quot;priceChangePeriod&quot;:6,&quot;isPriceReductionEnabled&quot;:1,&quot;priceReductionDisplayMinLimitInDays&quot;:28,&quot;priceReductionDisplayMaxLimitInDays&quot;:182,&quot;maxPicklistWeight&quot;:30,&quot;isCreatePicklistEnabled&quot;:1,&quot;algoliaWriteApiKey&quot;:&quot;d1606a81bb64a61dac65af8431165ae9&quot;,&quot;isCarrierMethodEnabled&quot;:1,&quot;addressesDefaultCountLimit&quot;:10,&quot;adhocBacsPaymentTransactionLimits&quot;:3000,&quot;isEmailFloodRecaptchaEnabled&quot;:0,&quot;isReCaptchaEnabled&quot;:0,&quot;isVariantsEnabled&quot;:1,&quot;algoliaWizardIndexName&quot;:&quot;dev_cex_pl&quot;,&quot;isReCaptchaOnExternalLoginEnabled&quot;:0,&quot;hotProductLimitCount&quot;:50,&quot;variantGroupName&quot;:&quot;Item&quot;,&quot;freshdeskApiKey&quot;:1,&quot;freshdeskSupportFolderName&quot;:&quot;General Selling FAQ&#x27;s&quot;,&quot;isNewStoreJobsCareerFormEnabled&quot;:1,&quot;isStoreCareerFormEnabled&quot;:1,&quot;isUnifiedEnabled&quot;:1,&quot;isUnifiedMembershipEnabled&quot;:1,&quot;isProcessWorldpayNotificationEnabled&quot;:1,&quot;qubitTrackingId&quot;:&quot;cex_uk_prod&quot;,&quot;isAlgoliaProxyEnabled&quot;:0,&quot;isOregonBulkDiscountOrRollbackEmailRequired&quot;:1,&quot;isAddressLine2Required&quot;:0,&quot;worldpayPaymentMethod&quot;:&quot;&quot;,&quot;algoliaSearchAppKey&quot;:&quot;beed9724213aec807bcc2c2941c1182f&quot;,&quot;hotProductCount&quot;:4,&quot;otherSupercatCount&quot;:20,&quot;superCatDetails&quot;:&quot;[{ \&quot;isdisplay\&quot;:1, \&quot;superCategoryId\&quot;: *},{ \&quot;isdisplay\&quot;:1, \&quot;superCategoryId\&quot;:1},{\&quot;isdisplay\&quot;:1, \&quot;superCategoryId\&quot;:4},{\&quot;isdisplay\&quot;:1, \&quot;superCategoryId\&quot;:3},{\&quot;isdisplay\&quot;:1, \&quot;superCategoryId\&quot;:5},{\&quot;isdisplay\&quot;:0, \&quot;superCategoryId\&quot;:9},]&quot;,&quot;hotProductsCount&quot;:4,&quot;otherSupercatsCount&quot;:20,&quot;hotProductsCount1&quot;:4,&quot;otherSupercatsCount1&quot;:7,&quot;webuyPaymentTransactionLimits&quot;:100,&quot;isWebuyPaymentEnabled&quot;:1,&quot;minPackageLength&quot;:&quot;&quot;,&quot;maxPackageLength&quot;:&quot;&quot;,&quot;minPackageWidth&quot;:&quot;&quot;,&quot;maxPackageWidth&quot;:&quot;&quot;,&quot;minPackageHeight&quot;:&quot;&quot;,&quot;maxPackageHeight&quot;:&quot;&quot;,&quot;isSaftInvoiceRequired&quot;:1,&quot;isSaftEnabled&quot;:1,&quot;verifyMobileOtpTimeLimitInSecs&quot;:30,&quot;contactNumberDisplayForDropAndGo&quot;:0,&quot;isExecutionTimeLogEnabled&quot;:0,&quot;isDisplayDropAndGoContact&quot;:1,&quot;isDisplayDropAndGoContactEnabled&quot;:0,&quot;isWorldpayNotificationCronEnabled&quot;:1,&quot;hotproductsCardDisplayLimit&quot;:10,&quot;supercatDisplayLimit&quot;:20,&quot;isGetHotproductsFromTableEnabled&quot;:1,&quot;sdaInsuranceCodes&quot;:&quot;&quot;,&quot;isVoucherSendOutEnabled&quot;:1,&quot;isDispatchWithoutTrackingEnabled&quot;:1,&quot;isMultiAutoDispatchEnabled&quot;:1,&quot;isChristmasReturnsPolicyEnabled&quot;:1,&quot;isSkipDropAndGoCashCheckEnabled&quot;:1,&quot;isDisplayPackAndShipContactEnabled&quot;:0,&quot;isPhoneNumberRequiredOnDeliveryAddress&quot;:0,&quot;isBoxVisibilityEnabled&quot;:0,&quot;isPackShipPriceVarianceConsentEnabled&quot;:0,&quot;royalMailV3ProShippiingServiceLevel&quot;:1,&quot;storeHolidayDisplayWeekLimit&quot;:4,&quot;storeHolidayDisplayWeekLimit1&quot;:2,&quot;displayMetaTagAttributesIds&quot;:&quot;[57491,1,2,3]&quot;,&quot;isSpecialDeilveryCapChangeEnabled&quot;:1,&quot;isCancelUnprocessedFPSRequestsCronEnabled&quot;:1,&quot;tiktokUrl&quot;:&quot;&quot;,&quot;worlpayMigrationDate&quot;:&quot;&quot;,&quot;isSolrDeprecationForBoxListsHotProductsService&quot;:1,&quot;webuyBasketLimit&quot;:4,&quot;isTotalBasketQuantityLimitCheckEnabled&quot;:1,&quot;isOnDemandEmailAndSMSEnabled&quot;:1,&quot;isNewCareersEnabled&quot;:1,&quot;isShowCareerExperience&quot;:1,&quot;isShowCareerExperienceEnabled&quot;:1,&quot;isPhNoStandardisationEnabled&quot;:0,&quot;klaviyoPublicKey&quot;:&quot;WzXxzA&quot;,&quot;isKlaviyoIntegrationEnabled&quot;:1,&quot;isMobileVerificationEnabled&quot;:0,&quot;MemberTransactionSummaryLatestDate&quot;:&quot;2015-04-11&quot;,&quot;onDemandInvalidUserBlockTimeInMin&quot;:1,&quot;isCountryCodePrefixRequired&quot;:0,&quot;bazaarvoiceJsUrl&quot;:&quot;https://display-stg.ugc.bazaarvoice.com/static/webuy/en_IE/bvapi.js&quot;,&quot;isFreshdeskEnabled&quot;:1,&quot;googleAnalyticsTrackingCode&quot;:&quot;G-0HCC4MJT24&quot;,&quot;isQubitEnabled&quot;:1,&quot;siteStatus&quot;:1,&quot;isPcaEnabled&quot;:1,&quot;isAdrollEnabled&quot;:1,&quot;addThisWidgetId&quot;:&quot;cexwebuy&quot;,&quot;googleMapsApiKey&quot;:&quot;AIzaSyAcPzKC8f1ZfTZyaMdeNJk8wdKGPYe3wlg&quot;,&quot;oauthClientId&quot;:&quot;cex&quot;,&quot;oauthClientSecret&quot;:&quot;cexsecret&quot;,&quot;pcaAddressLookupApiKey&quot;:&quot;UG17-FC96-FA76-MH31&quot;,&quot;qubitJsLocation&quot;:&quot;https://static.goqubit.com/smartserve-3199.js&quot;,&quot;adrollAdvertisingId&quot;:&quot;Q3D27LPS5BBSVC5QQOKJCF&quot;,&quot;adrollPixelId&quot;:&quot;HQU6LJFA5RBBVMYVXUG736&quot;,&quot;isBazaarvoiceEnabled&quot;:1,&quot;isAdRollSmartPixelEnabled&quot;:1,&quot;itemDeliveryChargeIncurred&quot;:1.95,&quot;captureplusCssKey&quot;:&quot;UG17-FC96-FA76-MH31&quot;,&quot;captureplusCssLocation&quot;:&quot;//services.postcodeanywhere.co.uk/css/captureplus-2.30.min.css?key&#x3D;&quot;,&quot;captureplusJsKey&quot;:&quot;UG17-FC96-FA76-MH31&quot;,&quot;captureplusJsLocation&quot;:&quot;//services.postcodeanywhere.co.uk/js/captureplus-2.30.min.js?key&#x3D;&quot;,&quot;mncOrchardApiKey&quot;:&quot;33d1b12fd3d293db10fab08045591fba&quot;,&quot;mncOrchardJsLocation&quot;:&quot;//s3-eu-west-1.amazonaws.com/mnc-prd/tracking/MNCDataService.min_v1.1.1.0.js&quot;,&quot;isTitleEnabled&quot;:0,&quot;isMncScriptEnabled&quot;:1,&quot;isRepairsMenuEnabled&quot;:1,&quot;isSentryLoggingEnable&quot;:0,&quot;isSaveForLaterEnable&quot;:1,&quot;isSaveForLaterEnabled&quot;:1,&quot;bazaarvoicePixelJsUrl&quot;:&quot;https://apps.bazaarvoice.com/deployments/webuy/main_site/staging/en_IE/bv.js&quot;,&quot;qubitEcomQuantityDisplayMaxLimit&quot;:1,&quot;kelkooMerchantId&quot;:0,&quot;isIdealoEnabled&quot;:0,&quot;idealoClickId&quot;:0,&quot;idealoTrackingPixel&quot;:&quot;i5543263&quot;,&quot;branchKey&quot;:&quot;HQ&quot;,&quot;siteAnnouncementExpirySecondPerSession&quot;:3600,&quot;isStockAlertEnabled&quot;:1,&quot;facebookPixelId&quot;:1,&quot;gTagContainerId&quot;:&quot;GTM-PSXT65KK&quot;,&quot;showCashExchangePrice&quot;:1,&quot;insuredAmountUpto&quot;:150,&quot;ecViewQubitLanguage&quot;:&quot;en-GB&quot;,&quot;useWest10ProductImage&quot;:1,&quot;algoliaSearchEnabled&quot;:1,&quot;isWesellEnabled&quot;:1,&quot;isCaseStudyEnabled&quot;:1,&quot;isWebuyEnabled&quot;:1,&quot;oneTrustCookieId&quot;:&quot;49b15a4e-1ba0-4788-aff0-ade302ed3a29-test&quot;,&quot;oneTrustJsUrl&quot;:&quot;https://cdn-ukwest.onetrust.com/scripttemplates/otSDKStub.js&quot;,&quot;feedbackCodeValidityInDays&quot;:21,&quot;oneTrustAutoBlockJsUrl&quot;:&quot;https://cdn-ukwest.onetrust.com/consent/49b15a4e-1ba0-4788-aff0-ade302ed3a29-test/OtAutoBlock.js&quot;,&quot;supportAddressKey&quot;:&quot;EC&quot;,&quot;isWesellMaxDeliveryItemPriceLimitEnabled&quot;:1,&quot;isCustomLayoutTerritoryEnabled&quot;:0,&quot;qubitApiUrl&quot;:&quot;https://recs.qubit.com/vc/recommend&quot;,&quot;qubitApiVersion&quot;:&quot;v2.1&quot;,&quot;jotformFormId&quot;:232884274197367,&quot;isJotformEnabled&quot;:0,&quot;isOneTrustGCMEnabled&quot;:1,&quot;isCategoryHotProductsEnable&quot;:1,&quot;hotCategoryList&quot;:&quot;[1,4,3,5,2]&quot;,&quot;isFreshDeskSupportEnabled&quot;:1,&quot;isMaintenanceModeEnabled&quot;:0,&quot;isCMPEnabled&quot;:1,&quot;cookiePolicyCMPId&quot;:&quot;7fc13ba272666&quot;,&quot;klaviyoApiKey&quot;:&quot;WzXxzA&quot;}},&quot;error&quot;:{&quot;code&quot;:&quot;&quot;,&quot;internal_message&quot;:&quot;&quot;,&quot;moreInfo&quot;:[]}}}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-1c97a61d-eb9d-4167-b080-3eb2f2baa856-1">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <h5 class="alert alert-success text-uppercase text-center">No Tests for this request</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9" aria-expanded="false" aria-controls="collapse" id="requests-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9" class="collapsed text-white z-block"  style="text-decoration:none">
+                    Iteration: 1 - <span class="badge-outline-primary badge badge-primary">GET</span> Payment Types<i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9" class="collapse" aria-labelledby="requests-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://dev-wss2.cex.uk.webuy.test/v3/payments/types?mode&#x3D;2&amp;platformId&#x3D;18" target="_blank">https://dev-wss2.cex.uk.webuy.test/v3/payments/types?mode&#x3D;2&amp;platformId&#x3D;18</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 993ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 5.11KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar bg-success" style="width: 100%" role="progressbar">
+                                            <h5 class="text-uppercase text-white text-center" style="padding-top:5px;"><strong>No Tests for this request</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">27bb6f5f-30a5-495e-b768-1ff3864ea053</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">dev-wss2.cex.uk.webuy.test</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">Server</td>
+                                                    <td class="text-wrap">nginx</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Wed, 16 Apr 2025 14:43:02 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;UTF-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Transfer-Encoding</td>
+                                                    <td class="text-wrap">chunked</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Powered-By</td>
+                                                    <td class="text-wrap">PHP/8.2.27</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Xdebug-Profile-Filename</td>
+                                                    <td class="text-wrap">/var/log/wss/xdebug/cachegrind.out.8.gz</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Vary</td>
+                                                    <td class="text-wrap">Accept</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Frame-Options</td>
+                                                    <td class="text-wrap">DENY</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-XSS-Protection</td>
+                                                    <td class="text-wrap">1; mode&#x3D;block</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Content-Type-Options</td>
+                                                    <td class="text-wrap">nosniff</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Access-Control-Allow-Origin</td>
+                                                    <td class="text-wrap">*</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-984b1243-aeda-48a5-8e86-90050fd166b5-2" class="prettyPrint">{&quot;response&quot;:{&quot;ack&quot;:&quot;Success&quot;,&quot;data&quot;:{&quot;paymentType&quot;:[{&quot;paymentId&quot;:20,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Worldpay&quot;,&quot;paymentIn&quot;:1,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:1,&quot;isBillingAddressRequired&quot;:1,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:[{&quot;paymentId&quot;:1,&quot;paymentTypeName&quot;:&quot;Credit / Debit Card&quot;},{&quot;paymentId&quot;:2,&quot;paymentTypeName&quot;:&quot;iDeal&quot;}],&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:23,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Apple Pay Refund&quot;,&quot;paymentIn&quot;:0,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:0,&quot;isBillingAddressRequired&quot;:0,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:24,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Google Pay&quot;,&quot;paymentIn&quot;:1,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:1,&quot;isBillingAddressRequired&quot;:1,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:25,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Google Pay Refund&quot;,&quot;paymentIn&quot;:0,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:0,&quot;isBillingAddressRequired&quot;:0,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:26,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Klarna&quot;,&quot;paymentIn&quot;:1,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:0,&quot;isBillingAddressRequired&quot;:1,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:[{&quot;paymentId&quot;:6,&quot;paymentTypeName&quot;:&quot;Klarna, Pay in 3 — 3 interest-free instalments&quot;}],&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:27,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Klarna Refund&quot;,&quot;paymentIn&quot;:0,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:0,&quot;isBillingAddressRequired&quot;:0,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:28,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Adyen&quot;,&quot;paymentIn&quot;:1,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:1,&quot;isBillingAddressRequired&quot;:1,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:[{&quot;paymentId&quot;:1,&quot;paymentTypeName&quot;:&quot;Credit / Debit Card&quot;},{&quot;paymentId&quot;:2,&quot;paymentTypeName&quot;:&quot;iDeal&quot;},{&quot;paymentId&quot;:3,&quot;paymentTypeName&quot;:&quot;Przelewy24&quot;}],&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:29,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Adyen Refund&quot;,&quot;paymentIn&quot;:0,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:1,&quot;isBillingAddressRequired&quot;:1,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:30,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Klarna&quot;,&quot;paymentIn&quot;:1,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:1,&quot;isBillingAddressRequired&quot;:1,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:[{&quot;paymentId&quot;:5,&quot;paymentTypeName&quot;:&quot;Klarna, Pay in 3 — 3 interest-free instalments&quot;},{&quot;paymentId&quot;:6,&quot;paymentTypeName&quot;:&quot;Klarna Pay In 3&quot;}]},{&quot;paymentId&quot;:32,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Apple Pay&quot;,&quot;paymentIn&quot;:1,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:1,&quot;isBillingAddressRequired&quot;:1,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:33,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Apple Pay Refund&quot;,&quot;paymentIn&quot;:0,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:1,&quot;isBillingAddressRequired&quot;:1,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:8,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;PayPal&quot;,&quot;paymentIn&quot;:1,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:1,&quot;isBillingAddressRequired&quot;:1,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:12,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Voucher&quot;,&quot;paymentIn&quot;:1,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:1,&quot;isBillingAddressRequired&quot;:0,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:6,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Bank Transfer&quot;,&quot;paymentIn&quot;:0,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:0,&quot;isBillingAddressRequired&quot;:0,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:0,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;CeX Voucher and Other&quot;,&quot;paymentIn&quot;:1,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:1,&quot;isBillingAddressRequired&quot;:0,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null},{&quot;paymentId&quot;:19,&quot;isAddressRequired&quot;:0,&quot;paymentTypeName&quot;:&quot;Barclays Refund&quot;,&quot;paymentIn&quot;:0,&quot;inUse&quot;:1,&quot;isDeliveryAddressRequired&quot;:0,&quot;isBillingAddressRequired&quot;:0,&quot;barclaysPaymentTypes&quot;:null,&quot;worldpayPaymentTypes&quot;:null,&quot;klarnaPaymentTypes&quot;:null,&quot;adyenPaymentTypes&quot;:null,&quot;adyenKlarnaPaymentTypes&quot;:null}]},&quot;error&quot;:{&quot;code&quot;:&quot;&quot;,&quot;internal_message&quot;:&quot;&quot;,&quot;moreInfo&quot;:[]}}}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-984b1243-aeda-48a5-8e86-90050fd166b5-2">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <h5 class="alert alert-success text-uppercase text-center">No Tests for this request</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-b84e1dfe-c5a1-4271-9508-77bc11ceaee5" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-b84e1dfe-c5a1-4271-9508-77bc11ceaee5" aria-expanded="false" aria-controls="collapse" id="requests-b84e1dfe-c5a1-4271-9508-77bc11ceaee5" class="collapsed text-white z-block"  style="text-decoration:none">
+                    Iteration: 1 - <span class="badge-outline-primary badge badge-primary">GET</span> Application Health Check<i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-b84e1dfe-c5a1-4271-9508-77bc11ceaee5" class="collapse" aria-labelledby="requests-b84e1dfe-c5a1-4271-9508-77bc11ceaee5">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://dev-wss2.cex.uk.webuy.test/v3/healthcheck/application" target="_blank">https://dev-wss2.cex.uk.webuy.test/v3/healthcheck/application</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 13.3s</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 31.14KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar bg-success" style="width: 100%" role="progressbar">
+                                            <h5 class="text-uppercase text-white text-center" style="padding-top:5px;"><strong>No Tests for this request</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">4a635534-8541-4eeb-a1cd-87051bb15c81</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">dev-wss2.cex.uk.webuy.test</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">Server</td>
+                                                    <td class="text-wrap">nginx</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Wed, 16 Apr 2025 14:43:15 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;UTF-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Transfer-Encoding</td>
+                                                    <td class="text-wrap">chunked</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Powered-By</td>
+                                                    <td class="text-wrap">PHP/8.2.27</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Xdebug-Profile-Filename</td>
+                                                    <td class="text-wrap">/var/log/wss/xdebug/cachegrind.out.7.gz</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Vary</td>
+                                                    <td class="text-wrap">Accept</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Frame-Options</td>
+                                                    <td class="text-wrap">DENY</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-XSS-Protection</td>
+                                                    <td class="text-wrap">1; mode&#x3D;block</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Content-Type-Options</td>
+                                                    <td class="text-wrap">nosniff</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Access-Control-Allow-Origin</td>
+                                                    <td class="text-wrap">*</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-0f2f3702-aaea-4f5a-9780-49900d966c76-3" class="prettyPrint">{&quot;response&quot;:{&quot;ack&quot;:&quot;Success&quot;,&quot;data&quot;:{&quot;endpointStatus&quot;:[{&quot;endpoint&quot;:&quot;GET helloworld&quot;,&quot;endpointTag&quot;:&quot;42f78641aca1034a91ffd35edbfcef4c&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET appsettings/postlogin&quot;,&quot;endpointTag&quot;:&quot;13923e082366c1f66594a9691ac41223&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET appsettings/prelogin&quot;,&quot;endpointTag&quot;:&quot;2fe1acad6a06c77991976e6650ada2ed&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET basket/{cartId}&quot;,&quot;endpointTag&quot;:&quot;39c275ebc93c2e85458a55bc298e9169&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET basket/{cartId}/itemscount&quot;,&quot;endpointTag&quot;:&quot;771c23e5755f0b502f90730b0c65ea7a&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET blogposts&quot;,&quot;endpointTag&quot;:&quot;9c960e70d7f18794a46158f6448df420&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET blogposts/{postId}&quot;,&quot;endpointTag&quot;:&quot;11fc15964ce7e594ffd3f1875066fbf1&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET boxes/{boxId}/detail&quot;,&quot;endpointTag&quot;:&quot;74a5db9135d066590ccbc6f58b4e784f&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET boxes/{boxId}/neareststores&quot;,&quot;endpointTag&quot;:&quot;25d8068e17b15973d3956ea7d5470d10&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET boxes/{boxId}/stock&quot;,&quot;endpointTag&quot;:&quot;a5d1ce1e112db9ed5aad86163e2126b6&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET boxes/ecomstock&quot;,&quot;endpointTag&quot;:&quot;98d0f9aff57bce7f57941005b35891e6&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET boxes/shortdetail&quot;,&quot;endpointTag&quot;:&quot;74016a287fd5786988ad9a09e45bb571&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET boxlists/hotproducts&quot;,&quot;endpointTag&quot;:&quot;c3b32b3a4848c4f3f8dce360a68bf431&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET boxlists/mostwanted&quot;,&quot;endpointTag&quot;:&quot;e6bf3c6c9402e97c1f94addcf9e21ded&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET boxlists/topsellers&quot;,&quot;endpointTag&quot;:&quot;7a36d6ea7fe809a3b430e1fb0a85209d&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET careers&quot;,&quot;endpointTag&quot;:&quot;8db1e2674fa92832e9209c87a513bdfb&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET careers/{careerId}/jobs/{jobId}&quot;,&quot;endpointTag&quot;:&quot;dea75c56dc2d3488d33f4d6d61e4ca02&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET careers/{careersId}/jobs&quot;,&quot;endpointTag&quot;:&quot;3371c1e19a39e2df12b4868a67538179&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET careers/jobvacancies&quot;,&quot;endpointTag&quot;:&quot;7bddb335048b4099fd70ccddbabba3f3&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET categories&quot;,&quot;endpointTag&quot;:&quot;e9701e489114fdf8ea7b89a78f1d917f&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET categories/popular&quot;,&quot;endpointTag&quot;:&quot;240d7079e9a407b2628610b262afaeb6&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET cms&quot;,&quot;endpointTag&quot;:&quot;a6223a9c7363ae58ca75dca093cdffcf&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET cms/banners&quot;,&quot;endpointTag&quot;:&quot;f4fbe11a00585f9000b3cee937264934&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET cms/categorydetail&quot;,&quot;endpointTag&quot;:&quot;ea63cd7acc3253c08a7a614fc491fdaf&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET cms/content&quot;,&quot;endpointTag&quot;:&quot;0a22ae8cf1a1be5d703075e7761e2112&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET cms/contentversiondetail&quot;,&quot;endpointTag&quot;:&quot;951ad6748accd26528a478c62936b920&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET cms/contentversions&quot;,&quot;endpointTag&quot;:&quot;6a1eb8460fded4091a8812ca5640eafd&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET cms/predictivesearch&quot;,&quot;endpointTag&quot;:&quot;9f1f66b9af3d97dcad5c4f947942dcb8&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET contact/enquirytypes&quot;,&quot;endpointTag&quot;:&quot;541c65fc0eebe9413d5a4762f27e9131&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET contact/faq&quot;,&quot;endpointTag&quot;:&quot;883c1cb1e8cdf0ebc910571404bb08bc&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET feedback/list&quot;,&quot;endpointTag&quot;:&quot;7db563feb5a86c6757cffac70bfc0033&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET feedback/statsbydate&quot;,&quot;endpointTag&quot;:&quot;42aa5075b424e51706cd87c7816dad8b&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET feedback/validatecode&quot;,&quot;endpointTag&quot;:&quot;8fc771ee9bd47c9c769f4a9a3b0b6b16&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET franchises/casestudies&quot;,&quot;endpointTag&quot;:&quot;638322c3d3bf6230a563d3c34c5d7e4c&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET franchises/formfields&quot;,&quot;endpointTag&quot;:&quot;f13e11e7fb74065785b5f267d871735b&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET franchises/heardfrom&quot;,&quot;endpointTag&quot;:&quot;099248f043d949e42df93b840eeae19e&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET manufacturers&quot;,&quot;endpointTag&quot;:&quot;03ca5f1ff72b0c7c4d7104a6d9ae3c18&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{memberId}&quot;,&quot;endpointTag&quot;:&quot;fdc67a0407dff548218ef86f7192f0cc&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{memberId}/favouriteboxes&quot;,&quot;endpointTag&quot;:&quot;dccf3136c7a759e7297f045856cdd26f&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{memberId}/favouriteboxescount&quot;,&quot;endpointTag&quot;:&quot;8f9b7d35f94e3eef10d795b6aba00b26&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{memberId}/favouriteboxesids&quot;,&quot;endpointTag&quot;:&quot;3389784cc39a8942a66d6a0ee3fd7992&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{memberId}/identityhistory&quot;,&quot;endpointTag&quot;:&quot;9c703c5416a5e74bef56502af954927b&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{memberId}/orders&quot;,&quot;endpointTag&quot;:&quot;199d647efec8060db1c4989f77b5d1c9&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{memberId}/orderscount&quot;,&quot;endpointTag&quot;:&quot;366f8039204dd375bf756c6475bd9009&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{memberId}/walletaddress&quot;,&quot;endpointTag&quot;:&quot;67dbe3900fa336da2a6f1d89404912a2&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{memberId}/stockalerts&quot;,&quot;endpointTag&quot;:&quot;307e5c741600eaaf6c33b181c080e10c&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{memberId}/stockalertstatus&quot;,&quot;endpointTag&quot;:&quot;939ee70974c201bf5acd46704ee1f609&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/identitydetails&quot;,&quot;endpointTag&quot;:&quot;ad15b12287242e1f85801a805a3060d7&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/idtypes&quot;,&quot;endpointTag&quot;:&quot;57e06456da390fa4569eef0178331ecd&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/internal/detail&quot;,&quot;endpointTag&quot;:&quot;4cec6044fd63e0c8b35cc989861d3e8e&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{memberId}/bankaccounts&quot;,&quot;endpointTag&quot;:&quot;35a3b19966120975416b968b54c7c3b6&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/newpassword&quot;,&quot;endpointTag&quot;:&quot;8fdf15212e925dc4bcd359cbd9461c1a&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/titles&quot;,&quot;endpointTag&quot;:&quot;2aa2e9f22cc9cf2a00b176e3ff78c891&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/orders/internal&quot;,&quot;endpointTag&quot;:&quot;865bfa5025b25ead66ba3afe200cbc57&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/verifynewpasswordtoken&quot;,&quot;endpointTag&quot;:&quot;4e828fc0900b3a3b4bf71a38539e24d9&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/permissions&quot;,&quot;endpointTag&quot;:&quot;7e362514d05318da4ea94df1f40952b1&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET nvidiatradeups/devices&quot;,&quot;endpointTag&quot;:&quot;d63c66217d088c5f3565c1e2ae9d3db7&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET payments/charities&quot;,&quot;endpointTag&quot;:&quot;42c4ae66142768ea35451d7a51c29ec3&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET payments/types&quot;,&quot;endpointTag&quot;:&quot;cc052aa867fa4cf21d597063bc39cf8b&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET payments/deliverycharges&quot;,&quot;endpointTag&quot;:&quot;2012c1b3f1877d512efd0b396ac9cc46&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET press&quot;,&quot;endpointTag&quot;:&quot;ffa7c8c4f8ae0813dd04d7c19e6ee3e8&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET press/{postId}&quot;,&quot;endpointTag&quot;:&quot;c7b0fcb58d3d4e62231647b5e8a720ce&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET productlines&quot;,&quot;endpointTag&quot;:&quot;10eb630111c15cdb9aad636084f5fd77&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET stores&quot;,&quot;endpointTag&quot;:&quot;1e3255de41c801ff64d9ff44caf0c665&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET stores/{storeId}/detail&quot;,&quot;endpointTag&quot;:&quot;cc39f9804ebdf707804a92f06a2afc29&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET stores/{storeId}/direction&quot;,&quot;endpointTag&quot;:&quot;0fbbd4c286e95bd80b9421988a0b5496&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET stores/address&quot;,&quot;endpointTag&quot;:&quot;68bea60ae5f4b9d953591eb18eebf629&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET stores/count&quot;,&quot;endpointTag&quot;:&quot;9c1d8e55ca0818e6bfce1e52612593e2&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET stores/nearest&quot;,&quot;endpointTag&quot;:&quot;e534df1498b0699b180286d69f55ddbe&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET supercats&quot;,&quot;endpointTag&quot;:&quot;4f44d496c1561001f3006a64e1eebfaa&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET timezones&quot;,&quot;endpointTag&quot;:&quot;3a6b567b2b49d74f32e4e7c6d6c7633f&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET utilities/datetime&quot;,&quot;endpointTag&quot;:&quot;b40c1e5b82cca38886f7a0cf7f03b6a2&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET webuyorders/{webOrderNumber}/detail&quot;,&quot;endpointTag&quot;:&quot;75d5ab09e522260565323dfe2c625e74&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET webuyorders/{webOrderNumber}/internaldetail&quot;,&quot;endpointTag&quot;:&quot;fce9afd6dd06a324fa034e200d3bdda1&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET webuyorders/{webOrderNumber}/shortdetail&quot;,&quot;endpointTag&quot;:&quot;ae022211b57495674db1ad067f306e0d&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET webuyorders/recycle&quot;,&quot;endpointTag&quot;:&quot;ed8c2fb1440a5723689b8ff95d968f50&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET wesellorders/{webOrderNumber}/import&quot;,&quot;endpointTag&quot;:&quot;e7b16a524618fad4c870c9b6e07fbc0b&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET wesellorders/{webOrderNumber}/refunddetail&quot;,&quot;endpointTag&quot;:&quot;49c302fd827ea3baf98243dbf72f1afb&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET wesellorders/{webOrderNumber}/settlementamount&quot;,&quot;endpointTag&quot;:&quot;7640e1a7062b62868dea897aae3eeadd&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET wesellorders/{webOrderNumber}/detail&quot;,&quot;endpointTag&quot;:&quot;becfa5a1a93a48eccd881bb5cb2912c8&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET wesellorders/refundhistory&quot;,&quot;endpointTag&quot;:&quot;0a031096c54495b9289d8cf86f75bf37&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET wesellorders/{webOrderNumber}/deliverycharge&quot;,&quot;endpointTag&quot;:&quot;29c7dcf9ab2ba5df3bae477ffc36a313&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET permissions&quot;,&quot;endpointTag&quot;:&quot;4e2d7415855bec1749e8bb367ca5daa6&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET permissions/list&quot;,&quot;endpointTag&quot;:&quot;296d1c46076e0abf46890f4f4315981f&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/bankpayment&quot;,&quot;endpointTag&quot;:&quot;c346ecad19edc5d903240e2e3193c8a8&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST payments/validatevoucher&quot;,&quot;endpointTag&quot;:&quot;36b9cade201d6757d98aa29e227cbbbb&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST payments/barclays/notification&quot;,&quot;endpointTag&quot;:&quot;edb6e7f71d70164a62e2b213619c2279&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST basket/{cartId}&quot;,&quot;endpointTag&quot;:&quot;3329df6ceb6f2df46dd1c66e1ebc1d40&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST careers/apply&quot;,&quot;endpointTag&quot;:&quot;74a02b9eaa6d055ed4b14c0f0867a7ec&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST contact/enquiry&quot;,&quot;endpointTag&quot;:&quot;625727b25e1a0f58a27373c85c59292c&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST contact/requestprice&quot;,&quot;endpointTag&quot;:&quot;0438f5764408826879e73ffb404b806e&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST feedback/app&quot;,&quot;endpointTag&quot;:&quot;1019e6def2adaec3a82446f1701a0283&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST feedback/code&quot;,&quot;endpointTag&quot;:&quot;9e24b6198e3a33fd3979f7dffa9c9487&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST feedback/store&quot;,&quot;endpointTag&quot;:&quot;b937fb0f83f19c286faa9791377877db&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST franchises&quot;,&quot;endpointTag&quot;:&quot;80aba8989bac6e4c4e92e9046e156518&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST members&quot;,&quot;endpointTag&quot;:&quot;0287f891f6b6f801d88879168b895aaa&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST members/{memberId}/address&quot;,&quot;endpointTag&quot;:&quot;d3f986708faa20696299b1edc33b6c60&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST members/{memberId}/favouriteboxes&quot;,&quot;endpointTag&quot;:&quot;6374feebe225a9a7799d6babe90a88d1&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST members/{memberId}/walletaddress&quot;,&quot;endpointTag&quot;:&quot;49b73ff980852659e75dcf3be7c2b629&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST members/emailtoken&quot;,&quot;endpointTag&quot;:&quot;66007f9970807993f5145685b1dced63&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST members/login&quot;,&quot;endpointTag&quot;:&quot;ffb5f399aa8a44f5bcc9649d79be89fe&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST members/{memberId}/bankaccounts&quot;,&quot;endpointTag&quot;:&quot;1b17a1be8fec13ab16ec664cad274d7d&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST members/{memberId}/stockalert&quot;,&quot;endpointTag&quot;:&quot;be2e70dec5c0a4430ebf1a5c8289d936&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST members/permissions&quot;,&quot;endpointTag&quot;:&quot;e9042730114f920386b6ea49479eaa92&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST nvidiatradeups&quot;,&quot;endpointTag&quot;:&quot;b797d76da53328c94f29c05a000733ac&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST webuyorders/generate&quot;,&quot;endpointTag&quot;:&quot;30acf0a9af50794b46205964a69a41c2&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST webuyorders/{webOrderNumber}/payment&quot;,&quot;endpointTag&quot;:&quot;955769fc431ebb9d0c5fa5f3735acee2&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/{webOrderNumber}/process&quot;,&quot;endpointTag&quot;:&quot;742bf162efbad26de93bbdd19ccdf1d5&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/{webOrderNumber}/cancel&quot;,&quot;endpointTag&quot;:&quot;2446291c648395e866022b32cf5f49fd&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/{webOrderNumber}/capture&quot;,&quot;endpointTag&quot;:&quot;7138f5ea1a51b405efc373322fb4ea12&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/{webOrderNumber}/fullrefund&quot;,&quot;endpointTag&quot;:&quot;ca22617d4a861c98dcc4de52576c870f&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/{webOrderNumber}/processrefund&quot;,&quot;endpointTag&quot;:&quot;6078f6c5833252093b814d20adc45355&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/{webOrderNumber}/refund&quot;,&quot;endpointTag&quot;:&quot;014683689ec06dd789182f1045f041c1&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/{webOrderNumber}/verifypaypalorder&quot;,&quot;endpointTag&quot;:&quot;ced617f55bacde3467fca2abdf096a1b&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/generate&quot;,&quot;endpointTag&quot;:&quot;1fa567e83c26a39a9971814f34c9ef50&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/generatepaypaltoken&quot;,&quot;endpointTag&quot;:&quot;e203a5d973a7586736c9e16c8c574340&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/{webOrderNumber}/dispatchnote&quot;,&quot;endpointTag&quot;:&quot;e0def3f4fbd00f9fd5a8f30e6891ad49&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/{webOrderNumber}/invoice&quot;,&quot;endpointTag&quot;:&quot;b7f3f5291590f9aebdb2d7025716f8ba&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST members/bankpayment&quot;,&quot;endpointTag&quot;:&quot;901b70950222bc2f8174c6285df3805d&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST utilities/queue&quot;,&quot;endpointTag&quot;:&quot;83f73881aae57ecdfc621d424a4a8c6b&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT basket/{cartId}&quot;,&quot;endpointTag&quot;:&quot;77448bd4a5c59be86949debdb376b15b&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT cms/content&quot;,&quot;endpointTag&quot;:&quot;6b8718009a510b275c6357aa3cbd2611&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT cms/restorecontent&quot;,&quot;endpointTag&quot;:&quot;5b8de0a67fa33d439383e9cf8fb3a2ba&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT members/{memberId}&quot;,&quot;endpointTag&quot;:&quot;efc5b544e48aa988bf209fa2d8d0154b&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT members/{memberId}/resetpassword&quot;,&quot;endpointTag&quot;:&quot;a8edc42b328555beb70c40d72cd6aaec&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT members/{memberId}/walletaddress&quot;,&quot;endpointTag&quot;:&quot;047d50f7681cf3d7335dbd50f1001d52&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT members/{memberId}/bankaccounts&quot;,&quot;endpointTag&quot;:&quot;a70d34b52e391c94cbcae0cc342c30cd&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT members/{memberId}/restorestockalerts&quot;,&quot;endpointTag&quot;:&quot;c9d353a82b7f946ca5a03b2c9c30ca37&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT members/password&quot;,&quot;endpointTag&quot;:&quot;5044999956c228719c83ec37aa1fe0a7&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT members/validateemail&quot;,&quot;endpointTag&quot;:&quot;fbccd8f25f4e2c8a391901a5afbc640c&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT webuyorders/{webOrderNumber}/cancel&quot;,&quot;endpointTag&quot;:&quot;f7e250c1b0eeadb3aabf139dd598e425&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT webuyorders/{webOrderNumber}/status&quot;,&quot;endpointTag&quot;:&quot;44bd90233060b36d1026901d17f2cc7f&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT wesellorders/{webOrderNumber}/picklist&quot;,&quot;endpointTag&quot;:&quot;3f37a5ab77594b200c3a8c105dfe6a62&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT wesellorders/{webOrderNumber}/collection&quot;,&quot;endpointTag&quot;:&quot;cc87f8e293b51d93df706bc19319ec99&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT members/bankpayment&quot;,&quot;endpointTag&quot;:&quot;5b381726a2c71484a6119f479101cbd3&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;DELETE basket/{cartId}&quot;,&quot;endpointTag&quot;:&quot;80731bde5dcc10e9ca9c396cfac45047&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;DELETE members/{memberId}/bankaccounts/{bankAccountNumber}&quot;,&quot;endpointTag&quot;:&quot;472cfcfa29c5c6980cdb23ffb5aea3ee&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;DELETE members/{memberId}/favouriteboxes&quot;,&quot;endpointTag&quot;:&quot;7651637d7155b775fae4b10a6862dc32&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;DELETE members/{memberId}&quot;,&quot;endpointTag&quot;:&quot;f1c07ed17228bdf848889fb98fd45d61&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;DELETE members/{memberId}/stockalerts&quot;,&quot;endpointTag&quot;:&quot;7f56dd73c36a788bb2b721759ebe1cc3&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;DELETE members/permissions&quot;,&quot;endpointTag&quot;:&quot;2567be5e8e5e75959b06c5b894e371d8&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON bazaarvoice/pie-feed&quot;,&quot;endpointTag&quot;:&quot;d6caf0297097fa154a1825dd6e10ef06&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON bazaarvoice/product-feed&quot;,&quot;endpointTag&quot;:&quot;3fb20a96fcef2e0ce64adf49bfa0c67c&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON cms-cache/index&quot;,&quot;endpointTag&quot;:&quot;33940b0024192b2fff72857c32bb0c98&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON productlines-cache/index&quot;,&quot;endpointTag&quot;:&quot;6a3376b0e68fe75b0d83bcd5a5e24c43&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON categories-cache/index&quot;,&quot;endpointTag&quot;:&quot;119fe14a8189381d4479c4f1b90a355c&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON queue/run&quot;,&quot;endpointTag&quot;:&quot;5db6dc33e2b441ca5b2e707da42e4258&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON data-import/full-import&quot;,&quot;endpointTag&quot;:&quot;b91cfcf634b8969fcff965c37f51c413&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON data-import/delta-import&quot;,&quot;endpointTag&quot;:&quot;0ed08283f6144a67d8c8cc62a0c5fddb&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON data-import/delete-import-files&quot;,&quot;endpointTag&quot;:&quot;70a1c250defd764b1edfd9282c2ec37e&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON data-import/monitor-import&quot;,&quot;endpointTag&quot;:&quot;82ebf096e1b84dc7f8dca86046a01efb&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST webuyorders/{webOrderNumber}/generateshippinglabel&quot;,&quot;endpointTag&quot;:&quot;ccb50a72216d01c1eb003aaa9c04b297&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT webuyorders/{webOrderNumber}&quot;,&quot;endpointTag&quot;:&quot;b82c075ce9ab941588f88ab9e9ff7795&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET webuyorders/{webOrderNumber}/itemstatushistory&quot;,&quot;endpointTag&quot;:&quot;3c54d2009904b8d08672476fbb00b66d&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET members/{$memberId}/cardtokens&quot;,&quot;endpointTag&quot;:&quot;cf73157fb5297b4798f24b587e98ce30&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;DELETE members/{$memberId}/cardtokens&quot;,&quot;endpointTag&quot;:&quot;27b1519870931628849d333d12e80d31&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET webuyorders/internal&quot;,&quot;endpointTag&quot;:&quot;0056b82a4d4ec1497b37d0e8369a7e42&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET webuyorders/bacspayment&quot;,&quot;endpointTag&quot;:&quot;ae30f39825ff7827d09675aa0b6ccf6a&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT webuyorders/bacspayment&quot;,&quot;endpointTag&quot;:&quot;67bfc8b683614d7a1bf795af18de6e8f&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET webuyorders/{weborderNumber}&quot;,&quot;endpointTag&quot;:&quot;ed720539b42003e5f45596fbdfad8a24&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST webuyorders/adhocpayments&quot;,&quot;endpointTag&quot;:&quot;9e66f1d06c36a6fba655dca351d3abad&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET webuyorders/adhocpayments&quot;,&quot;endpointTag&quot;:&quot;1ad90d37b03de8391bdefe9e03036428&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT webuyorders/adhocpayments&quot;,&quot;endpointTag&quot;:&quot;f17df54153b9574844689b870c67271c&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST /webuyorders/{webOrderNumber}/generateshippinglabel/internal&quot;,&quot;endpointTag&quot;:&quot;1da07e4292c3f8d29933c607eb25cf65&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON bacs-payment/webuyorder-payments&quot;,&quot;endpointTag&quot;:&quot;a065d5ce3b95a16d524c4667921aa9b6&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON bacs-payment/webuyorder-schedule-payments&quot;,&quot;endpointTag&quot;:&quot;3064418ddaebacee8659b822d68d6a8c&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON active-campaign/sync-contact&quot;,&quot;endpointTag&quot;:&quot;05eb27857f6e6088fb6cb5d7777ca202&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON active-campaign/delete-contact&quot;,&quot;endpointTag&quot;:&quot;3bf99d699b5ac3bd63afde595c0c5478&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON picklist/mark-expired-reassign-picklist&quot;,&quot;endpointTag&quot;:&quot;1f11770e9c5ef8aafea83e4e0964f5ea&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON market-place/marketplace-drop-auto-email&quot;,&quot;endpointTag&quot;:&quot;d000c2a01c8b12c7fff7ebebed126454&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON picklist/create-picklist&quot;,&quot;endpointTag&quot;:&quot;27e048b5abfed9f7585be03418bed82e&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON branches/update-dynamic-branch-ip&quot;,&quot;endpointTag&quot;:&quot;1f9a0a6774c2a9a40c33f37f27f5ef08&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET stores/collection&quot;,&quot;endpointTag&quot;:&quot;87538faeb53079ada2253b67828cd0c8&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON wesellorder/voucher-send-out&quot;,&quot;endpointTag&quot;:&quot;359f3770803a98177b27bbd56b5e2b4e&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON wesellorder/ready-to-collect-reminder-email&quot;,&quot;endpointTag&quot;:&quot;7e5aa0706041681116e7c7ddf71c8380&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON members/cancel-member-email&quot;,&quot;endpointTag&quot;:&quot;f18f9fb35a0117b293795e367fa34705&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET reports/orderhistory&quot;,&quot;endpointTag&quot;:&quot;17467c1133b452a5189dccd3c1b74f56&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET wesellorders/{webOrderNumber}/shortdetails&quot;,&quot;endpointTag&quot;:&quot;2366994826b3a2e18399ca24a45cd97f&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET orders&quot;,&quot;endpointTag&quot;:&quot;2477ebb6644562d472120265f6a4a476&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET reports/scrapreturn&quot;,&quot;endpointTag&quot;:&quot;ab8d2ad0f97252b9669bc6596b4d522a&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET reports/modules&quot;,&quot;endpointTag&quot;:&quot;19b7c6823b8743ac6f9adccb75e8cd48&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST reports/moduleaudit&quot;,&quot;endpointTag&quot;:&quot;bdf8fdb39ecbc9dbd4bc98372b541fe5&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON active-campaign/create-contact&quot;,&quot;endpointTag&quot;:&quot;dac5ac4de396d0ad37ad697b55c0230f&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON active-campaign/update-contact&quot;,&quot;endpointTag&quot;:&quot;bb5f705707fee1610119d135fd1fde46&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON data-import/attribute-import&quot;,&quot;endpointTag&quot;:&quot;a00577fd19a70e04f7ca5106b30aae72&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;GET wesellorders/packagedimensions&quot;,&quot;endpointTag&quot;:&quot;ef0a20b95578f13007b8e304377e1f31&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON boxlists/get-hot-products-list&quot;,&quot;endpointTag&quot;:&quot;6ea42d2ad554a822e9a1f269fc373c08&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;DELETE members/{memberId}/address/{addressId}&quot;,&quot;endpointTag&quot;:&quot;da5460c9c76c6f21ade27bd93096d52a&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT members/{memberId}/address/{addressId}&quot;,&quot;endpointTag&quot;:&quot;ee673d78ad60c7239f1c09734d6acdcb&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;PUT webuyorders/{webOrderNumber}/address&quot;,&quot;endpointTag&quot;:&quot;180ad43a24ec5658d1544d3f4b746d24&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;CRON bacs-payment/cancel-unprocessed-fps-requests&quot;,&quot;endpointTag&quot;:&quot;9ff352bce7f3abec3d34a090a89ec166&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST payments/adyen/notification&quot;,&quot;endpointTag&quot;:&quot;b272fe1685fe2894f86d1b99858f6623&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/{webOrderNumber}/verifyadyenorder&quot;,&quot;endpointTag&quot;:&quot;3b91d29f5b150b0c0fd3e515a7f5d8c5&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;POST wesellorders/generateapplepaysession&quot;,&quot;endpointTag&quot;:&quot;5dbe2a4a64dbe2638161e3ab78d1c53e&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : blog - https://www.blogger.com/feeds/1918688228918285001/posts/default?alt&#x3D;json&amp;&amp;max-results&#x3D;1&quot;,&quot;endpointTag&quot;:&quot;126ac9f6149081eb0e97c2e939eaad52&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : press - http://blog.webuy.com/feeds/posts/default/-/pressmention/?alt&#x3D;json&amp;max-results&#x3D;1&quot;,&quot;endpointTag&quot;:&quot;5f0038e170564c7ad98d949c741a4da2&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : pcaBankValidation - https://services.postcodeanywhere.co.uk/BankAccountValidation/Interactive/Validate/v2.00/wsdlnew.ws&quot;,&quot;endpointTag&quot;:&quot;4a9babc82a73463eb4b846a0b6682a13&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : voucherService - http://10.204.3.99/CexServices/National/V2/Task/VoucherService/VoucherService.svc?wsdl&quot;,&quot;endpointTag&quot;:&quot;c526fc3ee2ae540e10187b2de8535e70&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : orderService - http://10.204.3.99/CexServices/National/V2/Task/OrderService/OrderService.svc?wsdl&quot;,&quot;endpointTag&quot;:&quot;e71146416b54270530abbb59edf1198d&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : royalMail - https://downdetector.co.uk/status/royalmail&quot;,&quot;endpointTag&quot;:&quot;63bd117940f22c93f8bf7bc852c96669&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : paypal - https://www.paypal-status.com/history/production&quot;,&quot;endpointTag&quot;:&quot;a0a058baaeef16e88f6bd2ee36c03f6f&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : bazaarVoice - https://status.bazaarvoice.com&quot;,&quot;endpointTag&quot;:&quot;e21feaefa478dedd114c3fd1e00b81bb&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : worldpay - https://status.access.worldpay.com&quot;,&quot;endpointTag&quot;:&quot;599df630d46c3112733dfae681b5c938&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : algolia - https://status.algolia.com&quot;,&quot;endpointTag&quot;:&quot;15f0f0f427b7a1c7c54051234900fdc4&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : activecampaign - https://status.activecampaign.com&quot;,&quot;endpointTag&quot;:&quot;015bc6e831e0adf2b20377c337fdb5b1&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : createPicklistService - http://10.204.3.99/EcomServices/service.asmx?WSDL&quot;,&quot;endpointTag&quot;:&quot;ad394f98f90c56ba5b0d986c151c5d1c&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : marketplace&quot;,&quot;endpointTag&quot;:&quot;bc5986ebbf4dde661f229fd527ad82f4&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : branchesService&quot;,&quot;endpointTag&quot;:&quot;1295a218e330406ad8b2e865654ea7da&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : membersService&quot;,&quot;endpointTag&quot;:&quot;2e8d9353b3f86c160d799b955617424d&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : kiwiService - https://dev-kiwi.cex.webuy.dev&quot;,&quot;endpointTag&quot;:&quot;05534b7f498606998ae862496e152d53&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;},{&quot;endpoint&quot;:&quot;Thirdparty : adyen&quot;,&quot;endpointTag&quot;:&quot;6c6959dd9f1726720105c00be5b38734&quot;,&quot;statusTime&quot;:1744814595,&quot;statusCode&quot;:1,&quot;status&quot;:&quot;Up&quot;}],&quot;counts&quot;:{&quot;up&quot;:194,&quot;down&quot;:0}},&quot;error&quot;:{&quot;code&quot;:&quot;&quot;,&quot;internal_message&quot;:&quot;&quot;,&quot;moreInfo&quot;:[]}}}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-0f2f3702-aaea-4f5a-9780-49900d966c76-3">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <h5 class="alert alert-success text-uppercase text-center">No Tests for this request</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            <div id="folder-912be120-2f31-44c8-85bf-db6a40d02620" class="card-deck iteration-0">
+            <div class="row iteration-0">
+                <div class="col-sm-12 mb-3 iteration-0">
+                <div class="card iteration-0">
+                    <div class="card-header  bg-success iteration-0">
+                        <a data-toggle="collapse" href="#" data-target="#collapse-912be120-2f31-44c8-85bf-db6a40d02620" aria-expanded="false" aria-controls="collapse" id="requests-912be120-2f31-44c8-85bf-db6a40d02620" class="collapsed text-white z-block"  style="text-decoration:none">
+                    Iteration: 1 - <span class="badge-outline-primary badge badge-primary">GET</span> Post Login<i class="float-lg-right fa fa-chevron-down" style="padding-top: 5px;"></i>
+                </a>
+                    </div>
+                    <div id="collapse-912be120-2f31-44c8-85bf-db6a40d02620" class="collapse" aria-labelledby="requests-912be120-2f31-44c8-85bf-db6a40d02620">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Request Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request Method:</strong> <span class="badge-outline-success badge badge-success"> GET</span><br>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Request URL:</strong> <a href="https://dev-wss2.cex.uk.webuy.test/v3/appsettings/postlogin?accessToken&#x3D;eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpZCI6ImNhYTkyYzA3N2YzMjJmMDBkZTg1MDVlMzY3MWU0MDNiZDFiMWY0YzgiLCJqdGkiOiJjYWE5MmMwNzdmMzIyZjAwZGU4NTA1ZTM2NzFlNDAzYmQxYjFmNGM4IiwiaXNzIjoiIiwiYXVkIjoiY2V4Iiwic3ViIjoiY2V4LXVrLTEwNDUyMzE0Njg4NTU0MjkyNTgiLCJleHAiOjE3NDQ4MTQ2MjYsImlhdCI6MTc0NDgxNDU5NiwidG9rZW5fdHlwZSI6ImJlYXJlciIsInNjb3BlIjpudWxsfQ.jVkRchZHxLQ5JWOxqhU5BKO0yyCIfDd3UNlEAHAVFOydIdF_Ot7SZ-2dsG3OZIsknM2PCd4dK_iLxZXkWcMJ28ZEgopKxfDPKbNNnzD9BQCbUfqbGKfDIdO7On1a1xBQ9YjNraYDit1RIzfCGfVxzgdIjISnuQtlHDRsC3EOGc5hCNdqVAMKNjYMupk9YGNkbU51vLPS0Di6ub3tY2MSPPrAmLAg2YRPpzzEKTMIaJRwOx5QANYvCebvZrBE3RlHW74knMx8bVMrXczMvn-TN7KFgxnPWJW0WMj0_8sTzuBaAJRaeGU-IefA0R0Ap_7GXxuyVnafBTF2jWCn4XEyJg&amp;platformId&#x3D;18&amp;memberId&#x3D;1045231468855429258" target="_blank">https://dev-wss2.cex.uk.webuy.test/v3/appsettings/postlogin?accessToken&#x3D;eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpZCI6ImNhYTkyYzA3N2YzMjJmMDBkZTg1MDVlMzY3MWU0MDNiZDFiMWY0YzgiLCJqdGkiOiJjYWE5MmMwNzdmMzIyZjAwZGU4NTA1ZTM2NzFlNDAzYmQxYjFmNGM4IiwiaXNzIjoiIiwiYXVkIjoiY2V4Iiwic3ViIjoiY2V4LXVrLTEwNDUyMzE0Njg4NTU0MjkyNTgiLCJleHAiOjE3NDQ4MTQ2MjYsImlhdCI6MTc0NDgxNDU5NiwidG9rZW5fdHlwZSI6ImJlYXJlciIsInNjb3BlIjpudWxsfQ.jVkRchZHxLQ5JWOxqhU5BKO0yyCIfDd3UNlEAHAVFOydIdF_Ot7SZ-2dsG3OZIsknM2PCd4dK_iLxZXkWcMJ28ZEgopKxfDPKbNNnzD9BQCbUfqbGKfDIdO7On1a1xBQ9YjNraYDit1RIzfCGfVxzgdIjISnuQtlHDRsC3EOGc5hCNdqVAMKNjYMupk9YGNkbU51vLPS0Di6ub3tY2MSPPrAmLAg2YRPpzzEKTMIaJRwOx5QANYvCebvZrBE3RlHW74knMx8bVMrXczMvn-TN7KFgxnPWJW0WMj0_8sTzuBaAJRaeGU-IefA0R0Ap_7GXxuyVnafBTF2jWCn4XEyJg&amp;platformId&#x3D;18&amp;memberId&#x3D;1045231468855429258</a><br>
+                                    </div>
+                                </div>
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Information</h5>
+                                    <span><i class="fas fa-info-circle"></i></span><strong> Response Code:</strong> <span class="float-right badge-outline badge badge-success"> 200 - OK</span><br>
+                                    <span><i class="fas fa-stopwatch"></i></span><strong> Mean time per request:</strong> <span class="float-right badge-outline badge badge-success"> 544ms</span><br>
+                                    <span><i class="fas fa-database"></i></span><strong> Mean size per request:</strong> <span class="float-right badge-outline badge badge-success"> 2.39KB</span><br>
+                                    <hr>
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Test Pass Percentage</h5>
+                                    <div>
+                                        <div class="progress" style="height: 40px;">
+                                            <div class="progress-bar bg-success" style="width: 100%" role="progressbar">
+                                            <h5 class="text-uppercase text-white text-center" style="padding-top:5px;"><strong>No Tests for this request</strong></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3">
+                                <div class="card-deck">
+                                <div class="card border-info" style="width: 50rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-uppercase text-white text-center bg-info">Request Headers</h5>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                            <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-nowrap">User-Agent</td>
+                                                        <td class="text-wrap">PostmanRuntime/7.39.0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept</td>
+                                                        <td class="text-wrap">*/*</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Cache-Control</td>
+                                                        <td class="text-wrap">no-cache</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Postman-Token</td>
+                                                        <td class="text-wrap">4dfc3027-6581-4249-b86b-671ce736a340</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Host</td>
+                                                        <td class="text-wrap">dev-wss2.cex.uk.webuy.test</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Accept-Encoding</td>
+                                                        <td class="text-wrap">gzip, deflate, br</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-nowrap">Connection</td>
+                                                        <td class="text-wrap">keep-alive</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Headers</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                        <thead class="thead-light text-center"><tr><th>Header Name</th><th>Header Value</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="text-nowrap">Server</td>
+                                                    <td class="text-wrap">nginx</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Date</td>
+                                                    <td class="text-wrap">Wed, 16 Apr 2025 14:43:16 GMT</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Content-Type</td>
+                                                    <td class="text-wrap">application/json; charset&#x3D;UTF-8</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Transfer-Encoding</td>
+                                                    <td class="text-wrap">chunked</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Connection</td>
+                                                    <td class="text-wrap">keep-alive</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Powered-By</td>
+                                                    <td class="text-wrap">PHP/8.2.27</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Xdebug-Profile-Filename</td>
+                                                    <td class="text-wrap">/var/log/wss/xdebug/cachegrind.out.8.gz</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Vary</td>
+                                                    <td class="text-wrap">Accept</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Frame-Options</td>
+                                                    <td class="text-wrap">DENY</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-XSS-Protection</td>
+                                                    <td class="text-wrap">1; mode&#x3D;block</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">X-Content-Type-Options</td>
+                                                    <td class="text-wrap">nosniff</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-nowrap">Access-Control-Allow-Origin</td>
+                                                    <td class="text-wrap">*</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-sm-12 mb-3">
+                            <div class="card-deck">
+                            <div class="card border-info" style="width: 50rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title text-uppercase text-white text-center bg-info">Response Body</h5>
+                                        <div class="dyn-height">
+                                                <pre><code id="copyText-9f16d48c-13e8-4b8b-8367-362e50631fa9-4" class="prettyPrint">{&quot;response&quot;:{&quot;ack&quot;:&quot;Success&quot;,&quot;data&quot;:{&quot;postLoginSettings&quot;:{&quot;isDonationEnabled&quot;:1,&quot;isFasterPaymentEnabled&quot;:1,&quot;barclaysCurrencyCode&quot;:&quot;GBP&quot;,&quot;barclaysFormActionUrl&quot;:&quot;&quot;,&quot;barclaysMerchantAccount&quot;:&quot;WebuyUK&quot;,&quot;barclaysSharedSecret&quot;:&quot;78A5509CCC252432F5474A5A0071AEEF9018F1E61CAE7AC94138548D90EE91BA&quot;,&quot;isBarclaysAvsEnabled&quot;:1,&quot;isDuplicateBankAccountAllowed&quot;:1,&quot;isWeSellVoucherEnabled&quot;:1,&quot;isPaypalV2ApiEnabled&quot;:1,&quot;isPaypalAddressStateRequired&quot;:0,&quot;isPaypalWalletAddressEnabled&quot;:1,&quot;isMyAccountEmailVerificationEnabled&quot;:1,&quot;worldpayPaymentMethod&quot;:&quot;ONLINE&quot;,&quot;isoLanguageCode&quot;:&quot;en&quot;,&quot;isBarclayPaymentSessionFixEnabled&quot;:0,&quot;isPasswordRequiredForEmailChange&quot;:0,&quot;royalMailInsuredAmt&quot;:150,&quot;collectPlusInsuredAmt&quot;:150,&quot;shippingLabelRetryMaxLimit&quot;:3,&quot;isWebuyOrderShippingLabelEnabled&quot;:1,&quot;webuyaddressbranchid&quot;:8,&quot;iswebuyaddressdynamic&quot;:1,&quot;isWeBuyVoucherEnabled&quot;:1,&quot;klarnaPayLaterMinAmount&quot;:2,&quot;klarnaPayLaterMaxAmount&quot;:1000,&quot;klarnaSliceItMaxAmount&quot;:1000,&quot;klarnaSliceItMinAmount&quot;:5,&quot;isWorldpaySaveCardEnabled&quot;:1,&quot;isStateDropdownEnabled&quot;:0,&quot;isCountyRequired&quot;:0,&quot;isAutoShippingLabelEnabled&quot;:1,&quot;googlePayEnvironment&quot;:&quot;TEST&quot;,&quot;googlePayMerchantName&quot;:&quot;CeX&quot;,&quot;googlePayGatewayId&quot;:&quot;08ad021bd7bca75&quot;,&quot;googlePayGatewayName&quot;:&quot;worldpay&quot;,&quot;googlePayMerchantId&quot;:9223372036854775807,&quot;isGoogleCloudVisionApiEnabled&quot;:0,&quot;iscoutyenabled&quot;:1,&quot;isAdyenPaymentEnabled&quot;:1,&quot;adyenClientKey&quot;:&quot;test_SP6ME4WRMNCMDJ6SD5CQSDWGTAFFDMBN&quot;,&quot;worlpayMigrationDate&quot;:&quot;&quot;,&quot;worldpayMigrationDate&quot;:&quot;Febrero 2025&quot;,&quot;isWebuyPaypalAddressValidationEnabled&quot;:1,&quot;isBitcoinEnabled&quot;:0,&quot;isPaypalEnabled&quot;:1,&quot;isVoucherEnabled&quot;:1,&quot;googleConversionId&quot;:1234567890,&quot;googleConversionLang&quot;:&quot;en&quot;,&quot;googleConversionFormat&quot;:1234567890,&quot;googleConversionColor&quot;:&quot;ffffff&quot;,&quot;googleConversionLabelWebuy&quot;:&quot;ZO_5CLmptwMQq9-98AM&quot;,&quot;barclaysReturnUrl&quot;:&quot;http://uk.cwr.dev.webuy.com/buy/process&quot;,&quot;barclaysSessionValidityInMinutes&quot;:5,&quot;barclaysOrderExpiryInDays&quot;:3,&quot;locale&quot;:&quot;en_GB&quot;,&quot;googleConversionLabelWesell&quot;:&quot;ZaAMCLGqtwMQq9-98AM&quot;,&quot;googleConversionCurrency&quot;:&quot;GBP&quot;,&quot;worldpayLanguageCode&quot;:&quot;en&quot;,&quot;isGooglePayEnabled&quot;:1,&quot;isApplePayEnabled&quot;:1,&quot;worldpaySuccessURL&quot;:&quot;http://uk.cwr.dev.webuy.com/gift-card/thankyou?paymentState&#x3D;success&quot;,&quot;worldpayCancelURL&quot;:&quot;http://uk.cwr.dev.webuy.com/gift-card/thankyou?paymentState&#x3D;cancel&quot;,&quot;worldpayPendingURL&quot;:&quot;http://uk.cwr.dev.webuy.com/gift-card/thankyou?paymentState&#x3D;pending&quot;,&quot;adyenEnvironment&quot;:&quot;test&quot;,&quot;adyenReturnURL&quot;:&quot;https://uk.cwr.dev.webuy.com:3000/buy/process&quot;}},&quot;error&quot;:{&quot;code&quot;:&quot;&quot;,&quot;internal_message&quot;:&quot;&quot;,&quot;moreInfo&quot;:[]}}}</code></pre>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button class="btn btn-outline-secondary btn-sm copyButton" type="button" data-clipboard-action="copy" data-clipboard-target="#copyText-9f16d48c-13e8-4b8b-8367-362e50631fa9-4">Copy to Clipboard</button>
+                                        </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                <h5 class="card-title text-uppercase text-white text-center bg-info">Test Information</h5>
+                                    <h5 class="alert alert-success text-uppercase text-center">No Tests for this request</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<!-- Set slider initial position depending on the localstorage state -->
+
+<script>
+(function () {
+  var sliderChecked = true;
+  if (localStorage.getItem('theme') === 'theme-light') {
+    setTheme('theme-light');
+    sliderChecked = false;
+  } else {
+    setTheme('theme-dark');
+    sliderChecked = true;
+  }
+  $(document).ready( function () {
+    document.getElementById('slider').checked = sliderChecked;
+  });
+})();
+</script>
+
+<!-- Data Table Configuration -->
+
+<script>
+$(document).ready( function () {
+    $('.datatable').DataTable({
+        "retrieve": true,
+        "paging": false,
+        "info": false,
+        "fixedColumns":   {
+            "heightMatch": 'none'
+        }
+    });
+});
+</script>
+
+<!-- Tooltip Configuration -->
+
+<script>
+$(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    })
+})
+</script>
+
+<!-- Show/Hide The Folders -->
+
+<script>
+$('#openAll').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#folder-0bfcb4f0-e97d-496f-98e1-bd750919d5df-iteration-0').removeClass('collapsed')
+            $('#folder-collapse-0bfcb4f0-e97d-496f-98e1-bd750919d5df-iteration-0').addClass('show')
+        $('#openAll').html("Collapse Folders");
+        break;
+    case 2:
+            $('#folder-0bfcb4f0-e97d-496f-98e1-bd750919d5df-iteration-0').addClass('collapsed')
+            $('#folder-collapse-0bfcb4f0-e97d-496f-98e1-bd750919d5df-iteration-0').removeClass('show')
+        $('#openAll').html("Expand Folders");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Requests -->
+
+<script>
+$('#openAllRequests').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#requests-3a84afad-9982-4627-a359-2e76034ddd91').removeClass('collapsed')
+            $('#collapse-3a84afad-9982-4627-a359-2e76034ddd91').removeClass('collapsed')
+            $('#requests-3a84afad-9982-4627-a359-2e76034ddd91').addClass('show')
+            $('#collapse-3a84afad-9982-4627-a359-2e76034ddd91').addClass('show')
+            $('#requests-55484c7c-20f8-4ad4-a74f-7544f6879652').removeClass('collapsed')
+            $('#collapse-55484c7c-20f8-4ad4-a74f-7544f6879652').removeClass('collapsed')
+            $('#requests-55484c7c-20f8-4ad4-a74f-7544f6879652').addClass('show')
+            $('#collapse-55484c7c-20f8-4ad4-a74f-7544f6879652').addClass('show')
+            $('#requests-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').removeClass('collapsed')
+            $('#collapse-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').removeClass('collapsed')
+            $('#requests-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').addClass('show')
+            $('#collapse-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').addClass('show')
+            $('#requests-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').removeClass('collapsed')
+            $('#collapse-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').removeClass('collapsed')
+            $('#requests-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').addClass('show')
+            $('#collapse-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').addClass('show')
+            $('#requests-912be120-2f31-44c8-85bf-db6a40d02620').removeClass('collapsed')
+            $('#collapse-912be120-2f31-44c8-85bf-db6a40d02620').removeClass('collapsed')
+            $('#requests-912be120-2f31-44c8-85bf-db6a40d02620').addClass('show')
+            $('#collapse-912be120-2f31-44c8-85bf-db6a40d02620').addClass('show')
+        $('#openAllRequests').html("Collapse Requests");
+        break;
+    case 2:
+            $('#requests-3a84afad-9982-4627-a359-2e76034ddd91').addClass('collapsed')
+            $('#collapse-3a84afad-9982-4627-a359-2e76034ddd91').addClass('collapsed')
+            $('#requests-3a84afad-9982-4627-a359-2e76034ddd91').removeClass('show')
+            $('#collapse-3a84afad-9982-4627-a359-2e76034ddd91').removeClass('show')
+            $('#requests-55484c7c-20f8-4ad4-a74f-7544f6879652').addClass('collapsed')
+            $('#collapse-55484c7c-20f8-4ad4-a74f-7544f6879652').addClass('collapsed')
+            $('#requests-55484c7c-20f8-4ad4-a74f-7544f6879652').removeClass('show')
+            $('#collapse-55484c7c-20f8-4ad4-a74f-7544f6879652').removeClass('show')
+            $('#requests-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').addClass('collapsed')
+            $('#collapse-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').addClass('collapsed')
+            $('#requests-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').removeClass('show')
+            $('#collapse-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').removeClass('show')
+            $('#requests-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').addClass('collapsed')
+            $('#collapse-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').addClass('collapsed')
+            $('#requests-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').removeClass('show')
+            $('#collapse-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').removeClass('show')
+            $('#requests-912be120-2f31-44c8-85bf-db6a40d02620').addClass('collapsed')
+            $('#collapse-912be120-2f31-44c8-85bf-db6a40d02620').addClass('collapsed')
+            $('#requests-912be120-2f31-44c8-85bf-db6a40d02620').removeClass('show')
+            $('#collapse-912be120-2f31-44c8-85bf-db6a40d02620').removeClass('show')
+        $('#openAllRequests').html("Expand Requests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Skipped Tests -->
+
+<script>
+$('#openAllSkipped').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+switch (clickCount){
+    case 1:
+            $('#skipped-3a84afad-9982-4627-a359-2e76034ddd91').removeClass('collapsed')
+            $('#skipped-collapse-3a84afad-9982-4627-a359-2e76034ddd91').removeClass('collapsed')
+            $('#skipped-3a84afad-9982-4627-a359-2e76034ddd91').addClass('show')
+            $('#skipped-collapse-3a84afad-9982-4627-a359-2e76034ddd91').addClass('show')
+            $('#skipped-55484c7c-20f8-4ad4-a74f-7544f6879652').removeClass('collapsed')
+            $('#skipped-collapse-55484c7c-20f8-4ad4-a74f-7544f6879652').removeClass('collapsed')
+            $('#skipped-55484c7c-20f8-4ad4-a74f-7544f6879652').addClass('show')
+            $('#skipped-collapse-55484c7c-20f8-4ad4-a74f-7544f6879652').addClass('show')
+            $('#skipped-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').removeClass('collapsed')
+            $('#skipped-collapse-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').removeClass('collapsed')
+            $('#skipped-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').addClass('show')
+            $('#skipped-collapse-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').addClass('show')
+            $('#skipped-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').removeClass('collapsed')
+            $('#skipped-collapse-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').removeClass('collapsed')
+            $('#skipped-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').addClass('show')
+            $('#skipped-collapse-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').addClass('show')
+            $('#skipped-912be120-2f31-44c8-85bf-db6a40d02620').removeClass('collapsed')
+            $('#skipped-collapse-912be120-2f31-44c8-85bf-db6a40d02620').removeClass('collapsed')
+            $('#skipped-912be120-2f31-44c8-85bf-db6a40d02620').addClass('show')
+            $('#skipped-collapse-912be120-2f31-44c8-85bf-db6a40d02620').addClass('show')
+        $('#openAllSkipped').html("Collapse All Skipped Tests");
+        break;
+    case 2:
+            $('#skipped-3a84afad-9982-4627-a359-2e76034ddd91').addClass('collapsed')
+            $('#skipped-collapse-3a84afad-9982-4627-a359-2e76034ddd91').addClass('collapsed')
+            $('#skipped-3a84afad-9982-4627-a359-2e76034ddd91').removeClass('show')
+            $('#skipped-collapse-3a84afad-9982-4627-a359-2e76034ddd91').removeClass('show')
+            $('#skipped-55484c7c-20f8-4ad4-a74f-7544f6879652').addClass('collapsed')
+            $('#skipped-collapse-55484c7c-20f8-4ad4-a74f-7544f6879652').addClass('collapsed')
+            $('#skipped-55484c7c-20f8-4ad4-a74f-7544f6879652').removeClass('show')
+            $('#skipped-collapse-55484c7c-20f8-4ad4-a74f-7544f6879652').removeClass('show')
+            $('#skipped-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').addClass('collapsed')
+            $('#skipped-collapse-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').addClass('collapsed')
+            $('#skipped-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').removeClass('show')
+            $('#skipped-collapse-bd511fbd-5aa7-4906-8454-f01dd4f2c7b9').removeClass('show')
+            $('#skipped-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').addClass('collapsed')
+            $('#skipped-collapse-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').addClass('collapsed')
+            $('#skipped-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').removeClass('show')
+            $('#skipped-collapse-b84e1dfe-c5a1-4271-9508-77bc11ceaee5').removeClass('show')
+            $('#skipped-912be120-2f31-44c8-85bf-db6a40d02620').addClass('collapsed')
+            $('#skipped-collapse-912be120-2f31-44c8-85bf-db6a40d02620').addClass('collapsed')
+            $('#skipped-912be120-2f31-44c8-85bf-db6a40d02620').removeClass('show')
+            $('#skipped-collapse-912be120-2f31-44c8-85bf-db6a40d02620').removeClass('show')
+        $('#openAllSkipped').html("Expand All Skipped Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Show/Hide The Failures -->
+
+<script>
+$('#openAllFailed').on('click', function(e) {
+let clickCount = $(this).data("clickCount") || 1
+let failedItemContent
+let failedItemHeading
+switch (clickCount){
+    case 1:
+        $('#openAllFailed').html("Collapse All Failed Tests");
+        break;
+    case 2:
+        $('#openAllFailed').html("Expand All Failed Tests");
+        break;
+}
+clickCount = clickCount > 1 ? 1 : ++clickCount;
+$(this).data("clickCount", clickCount)
+})
+</script>
+
+<!-- Pretty Print the Response Body-->
+
+<script>
+function isJSON(data)
+{
+    var ret = true;
+    try {
+            JSON.parse(data);
+    }catch(e) {
+            ret = false;
+    }
+    return ret;
+}
+
+function isXML(data)
+{
+    return (data.length > 0 && data[0] === '<');
+}
+
+// see https://gist.github.com/sente/1083506/d2834134cd070dbcc08bf42ee27dabb746a1c54d#gistcomment-2254622
+function formatXML(data) {
+    const PADDING = ' '.repeat(2); // set desired indent size here
+    const reg = /(>)(<)(\/*)/g;
+    let pad = 0;
+    xml = data.replace(reg, '$1\r\n$2$3');
+
+    return xml.split('\r\n').map((node, index) => {
+        let indent = 0;
+        if (node.match(/.+<\/\w[^>]*>$/)) {
+            indent = 0;
+        } else if (node.match(/^<\/\w/) && pad > 0) {
+            pad -= 1;
+        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+            indent = 1;
+        } else {
+            indent = 0;
+        }
+
+        pad += indent;
+        return PADDING.repeat(pad - indent) + node;
+    }).join('\r\n');
+}
+
+$(".prettyPrint").each(function () {
+        var data = $(this).text();
+        // Verify whether data is JSON
+        if(isJSON(data))
+        {
+                obj = JSON.parse(data);
+                data = JSON.stringify(obj, null, 2);
+        }
+        else if(isXML(data)) {
+            data = formatXML(data);
+        }
+        $(this).text(data);
+});
+</script>
+
+
+<!-- Copy Response Body To Clipboard -->
+
+<script>
+    var clipboard = new ClipboardJS('.copyButton');
+
+    clipboard.on('success', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-success text-white")
+        e.trigger.textContent = '✔ Copied!';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-success text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+    clipboard.on('error', function(e) {
+        e.clearSelection();
+        $(".copyButton").addClass("bg-danger text-white")
+        e.trigger.textContent = '✗ Not Copied';
+        window.setTimeout(function() {
+            $(".copyButton").removeClass("bg-danger text-white")
+            e.trigger.textContent = 'Copy to Clipboard';
+        }, 2000);
+    });
+
+</script>
+
+<!-- Render the Description Markdown and link in the test failures -->
+
+<script>
+    const remarkable = new Remarkable();
+
+    const descriptions = document.querySelectorAll(".renderMarkdown");
+    descriptions.forEach(description => {
+        description.innerHTML = renderHtmlFromMarkdown(description.textContent);
+    });
+    function renderHtmlFromMarkdown(markdown) {
+        return remarkable.render(trim(markdown));
+    }
+    function trim(string) {
+        return string ? string.replace(/^ +| +$/gm, "") : string;
+    }
+</script>
+
+<!-- Show/Hide The Toggles When Scrolling The Page -->
+
+<script>
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("topOfRequestsScreen").style.display = "block";
+    document.getElementById("topOfFailuresScreen").style.display = "block";
+    document.getElementById("topOfSkippedScreen").style.display = "block";
+    document.getElementById("openAll").style.display = "none";
+    document.getElementById("openAllRequests").style.display = "none";
+
+
+  } else {
+    document.getElementById("topOfRequestsScreen").style.display = "none";
+    document.getElementById("topOfFailuresScreen").style.display = "none";
+    document.getElementById("topOfSkippedScreen").style.display = "none";
+    document.getElementById("openAll").style.display = "block";
+    document.getElementById("openAllRequests").style.display = "block";
+
+  }
+}
+
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script>
+
+<!-- Creates The Iteration Tabs -->
+
+<script type="text/javascript">
+    "use strict";
+
+window.onload = function () {
+
+  // set display for all blocks of response
+  var allItems = document.querySelectorAll('[class*=iteration-]');
+  allItems.forEach(function(elem){
+    elem.style.display = 'block';
+  });
+
+   
+  let totalIterations = 1;
+   
+
+  let iterationTabs = ``;
+  if(iterationTabs==``)
+  {
+      iterationTabs = [];
+      for(let i=0;i<totalIterations;i++)
+        iterationTabs.push(i+1);   
+  }
+  else
+  {
+      iterationTabs = iterationTabs.split(",");
+  }
+
+  let menu = document.querySelector('#execution-menu .nav');
+
+  for(var i = 0; i < totalIterations; i++)
+  {
+    let li = document.createElement('li');
+    li.appendChild(document.createTextNode(iterationTabs[i]===undefined?(i+1):iterationTabs[i]));
+    li.setAttribute('id', 'iteration-' + i);
+    li.classList.add("custom-tab");
+    li.classList.add("itPassed");
+
+    li.addEventListener('click', function() {
+      //set display to none for all except row
+      let allItems = document.querySelectorAll('[class*=iteration-]:not(.row)');
+      allItems.forEach(function(elem) {
+        elem.style.display = 'none';
+      })
+
+      let allMenus = document.querySelectorAll('[id*=iteration-]');
+      allMenus.forEach(function(elem){
+        elem.style.borderBottom = 'none';
+      })
+
+      this.style.borderBottom = 'solid 3px #032a33';
+
+      let items = document.querySelectorAll("." + this.id + ':not(.row)');
+      items.forEach(function(elem) {
+        elem.style.display = elem.style.display == 'block' ? 'none' : 'block';
+      })
+    });
+    menu.appendChild(li);
+  }
+
+  //shows first tab data
+  document.getElementById('iteration-0').click();
+  document.getElementById('iterationSelected').innerHTML = `Iteration ${document.getElementById('iteration-0').innerHTML} selected`
+
+}
+</script>
+
+<!-- Create the Selected Iteration Label -->
+
+<script>
+$(document).ready(function(){
+    $(function() {
+        $("#iterationList li").click(function() {
+            document.getElementById('iterationSelected').innerHTML = "Iteration " + this.innerHTML + " selected"
+        });
+    });
+});
+</script>
+
+<!-- Filter Action for the Iterations -->
+
+<script>
+$("#filterInput").on("input paste", function() {
+    var value = $(this).val();
+    $("#iterationList li").filter(function() {
+	    $("#showOnlyFailures").data("clickCount") ? $("#showOnlyFailures").click():null;
+        $(this).toggle($(this).text().indexOf(value) > -1)
+    });
+});
+</script>
+
+<!-- Showing the Failed Interations -->
+
+<script>
+$('#showOnlyFailures').on('click', function(e) {
+    let clickCount = $(this).data("clickCount") || 1
+	$("#filterInput").val()!="" && clickCount==1 ? $("#filterInput").val('').trigger('input'): null;
+    let selectedIteration = $('#iterationList li').filter(function () {
+        return $(this).css('border-bottom').indexOf("solid") > -1 && $(this).hasClass('itFailed');
+    });
+    selectedIteration.length || clickCount > 1 ? null : $("#iterationList li.itFailed")[0].click()
+    $("#iterationList li.itPassed").toggle()
+    $("div.bg-success [id*=requests]").parents('[class^="row iteration-"]').toggle();
+    $("div.bg-warning [id*=requests]").parents('[class^="row iteration-"]').toggle();
+    clickCount = clickCount > 1 ? 1 : ++clickCount;
+    clickCount > 1 ? $("#showOnlyFailures").html("Show All Iterations") : $("#showOnlyFailures").html("Show Failed Iterations");
+    $(this).data("clickCount", clickCount)
+})
+</script>
+</body>
+</html>
