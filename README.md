@@ -1,4 +1,4 @@
-# newman
+# Newman
 Newman API testing tool 
 ## Step to setup and install
 - docker engine must be installed
